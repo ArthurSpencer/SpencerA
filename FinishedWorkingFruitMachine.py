@@ -1,3 +1,4 @@
+import os
 import random
 
 print ("Would you like to play?")
@@ -5,35 +6,30 @@ print ("Credit: 100")
 print ("Each spin costs 20 credits")
 wait = input("Press Enter to Continue")
 
-#problems
-#if a single Skull is R2 or R3 then -100
-#if first two are the same it minuses 20 but if the last two are then it adds
-#if r1 and r2 are the same it foesnt work but if r1 == r3 it does
-
-
 poss = ["Cherry", "Bell", "Lemon", "Orange", "Star", "Skull"]
+ch = []
 Credit = 100
 goagain = True
 while goagain == True:
     Credit = Credit - 20
-    R1 = (random.choice(poss))
-    R2 = (random.choice(poss))
-    R3 = (random.choice(poss))
-    print (R1,R2,R3)
-    if (R1 and R2 and R3) == "Skull":
+    ch = []
+    for i in range(3):
+        ch.append(random.choice(poss))
+    for i in range(3):
+        print(ch[i])
+    if ch[0] == "Skull" and ch[1] == "Skull" and ch[2] == "Skull":
         Credit = 0
-    elif (R1 and R2) == "Skull" or (R2 and R3) == "Skull" or (R1 and R3) == "Skull":  
-        Credit = Credit - 100
-    elif (R1 and R2 and R3) == "Skull":
+    elif (ch[0] == "Skull" and ch[2] == "Skull") or (ch[1] == "Skull" and ch[2] == "Skull") or (ch[0] == "Skull" and ch[2] == "Skull"):      
+        Credit = Credit - 100 
+    elif ch[0] == "Bell" and ch[1] == "Bell" and ch[2] == "Bell":
         Credit = Credit + 500
-    elif (R1 == R2 == R3):
+    elif (ch[0] == ch[1]) and (ch[0] == ch[2]):
         Credit == Credit + 100
-    elif ((R1 == R2) or (R2 == R3) or (R1 == R3)):
+    elif ((ch[0] == ch[1]) or (ch[1] == ch[2]) or (ch[0] == ch[2])):
         Credit = Credit + 50
     else:
-        Credit = Credit
+        Credit = Credit 
 
-   
     print(Credit)
 
     print("Again? y/n")
@@ -47,5 +43,8 @@ while goagain == True:
     if(goagain) == False or (Credit < 20):
 
         exit()
+
+    os.system('cls')
     #endif
 #endwhile
+
