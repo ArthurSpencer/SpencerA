@@ -2,7 +2,7 @@ def bubblesort(nums):
     numitems = len(nums)
     number = numitems - 1
     flag = True
-    while number > 0:
+    while number > 0 and flag == True:
         flag = False
         for i in range(number):
             if nums[i] > nums[i+1]:
