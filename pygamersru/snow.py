@@ -1,3 +1,5 @@
+#SRC Good work, but you need to make the snowflakes reappear at the top of the screen.
+
 import pygame
 import random
 import math
@@ -39,7 +41,8 @@ class snow(pygame.sprite.Sprite):
     # Class update function - runs for each pass through the game loop
 
     def update(self):
-        self.rect.y = self.rect.y + self.speed
+        self.rect.y = self.rect.y + self.speed
+
     
     # Set speed of the sprite
 #End Class
@@ -47,7 +50,8 @@ class snow(pygame.sprite.Sprite):
 
 # - - Exit game flag set to false
 done = False
-# Create a list of the snow blocks
+# Create a list of the snow blocks
+
 snow_list = pygame.sprite.Group()
 # Create a list of all sprites
 all_sprites_list = pygame.sprite.Group()
