@@ -41,8 +41,11 @@ class snow(pygame.sprite.Sprite):
     # Class update function - runs for each pass through the game loop
 
     def update(self):
-        self.rect.y = self.rect.y + self.speed
-
+        
+        if self.rect.y > 480:
+            self.rect.y = 0
+        else:
+            self.rect.y = self.rect.y + self.speed
     
     # Set speed of the sprite
 #End Class
