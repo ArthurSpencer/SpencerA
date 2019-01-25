@@ -42,23 +42,14 @@ if myDog2.getColour() == "Unknown":
 print(myDog2.getName(), "is", myDog2.getColour())
 
 class Puppy(Dog):
-    def __init__(self, myName, shoesChewed):
-        self.p_name = myName
-        shoesChewed = 0
-        
-
-    def chewShoe(self, numShoes):
-        self.p_shoesChewed = shoesChewed + numShoes
+    p_ShoesChewed = 0    
+    def ShoesChewed(self, numShoes):
+        self.p_ShoesChewed = p_ShoesChewed + numShoes
     #endprocedure
-
     def getShoesChewed(self):
-        return self.p_shoesChewed
+        return self.p_ShoesChewed
     #endfunction
-
-myPuppy1 = Puppy("Clifford")
-Puppy1Name = myPuppy1.getName
-shoechew = myPuppy1.getShoesChewed
-
-print (Puppy1Name, shoechew)
-
 #endclass
+    
+myPuppy1 = Puppy("Clifford", "Red")
+print (myPuppy1.getName(), "has chewed", myPuppy1.getShoesChewed(), "shoes")
