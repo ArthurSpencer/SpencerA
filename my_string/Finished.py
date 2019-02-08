@@ -4,7 +4,6 @@ class stri():
         self.string = string
         
     def uppercase(self):
-        binaryholder = []
         binaryholder = list(self.string)
         for counter in range (0, len(self.string)):
             letter = ord(binaryholder[counter])
@@ -15,7 +14,6 @@ class stri():
         self.string = (binaryholder)
     
     def lowercase(self):
-        binaryholder = []
         binaryholder = list(self.string)
         for counter in range (0, len(self.string)):
             letter = ord(binaryholder[counter])
@@ -37,7 +35,6 @@ class stri():
 string1 = stri("UfDSd")
 string1.lowercase()
 print (string1.get_string())
-
 string1.set_char(1,"o")
 string1.uppercase()
 print (string1.get_string())
