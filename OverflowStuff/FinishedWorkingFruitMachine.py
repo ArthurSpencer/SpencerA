@@ -28,7 +28,8 @@ while goagain == True:
     elif ((ch[0] == ch[1]) or (ch[1] == ch[2]) or (ch[0] == ch[2])):
         Credit = Credit + 50
     else:
-        Credit = Credit 
+        Credit = Credit
+    #endif
 
     print(Credit)
 

@@ -73,7 +73,7 @@ def display_hangman(incorrect_guesses):
             print("|")
             print("|___")
               
-              
+        #endif
     
 
     
@@ -130,3 +130,4 @@ if incorrect_guesses == 5:
 else:
     print ("Winner")
         
+#endif

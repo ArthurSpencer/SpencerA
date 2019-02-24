@@ -73,7 +73,7 @@ def display_hangman(incorrect_guesses):
             print("|")
             print("|___")
               
-              
+        #endif
     
 
     
@@ -108,6 +108,8 @@ while not game_over:
         correct_needed = correct_needed - 1
     else:
         incorrect_guesses = incorrect_guesses + 1
+
+    #endif
     
     print ('Guesses made: ')
     print (guesses)
@@ -122,6 +124,7 @@ while not game_over:
         game_over = True
     else:
         game_over = False
+    #endif
 
 #endwhile
 
@@ -129,4 +132,4 @@ if incorrect_guesses == 5:
     print ("Loser")
 else:
     print ("Winner")
-        
+#endif
