@@ -3,7 +3,7 @@ class Dog():
     def __init__(self, myName, myColour):
         self.p_name = myName
         self.p_colour = myColour
-        
+    #enddef      
     def bark(self, barkTimes):
         for n in range (barkTimes):
             print("Woof!")
@@ -47,7 +47,7 @@ class Puppy(Dog):
     def __init__(self, myName, myColour, myDob):
         super().__init__(myName, myColour)
         self.p_Dob = myDob
-        
+    #enddef        
     def ShoesChewed(self, numShoes):
         self.p_ShoesChewed = p_ShoesChewed + numShoes
     #endprocedure
@@ -57,14 +57,14 @@ class Puppy(Dog):
 
     def printDogDetails(self):
         print (self.p_name, self.p_colour, self.p_Dob)
-
+    #enddef
     def bark(barkTimes):
         for n in range (barkTimes):
             print("Yap")
-
+    #enddef
     def getDob(self):
         return self.p_Dob
-        
+     #enddef       
 #endclass
     
 myPuppy1 = Puppy("Clifford", "Red", "12/08/2016")

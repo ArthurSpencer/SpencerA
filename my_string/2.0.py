@@ -31,12 +31,15 @@ class stri():
 
     def get_string(self):
         return "".join(self.string)
+    #endfunction
 
     def set_string(self, new):
         self.string = new
+    #endfunction
 
     def set_char(self, position, char):
         self.string[position] = char
+    #endfunction
 
 string1 = stri("uppercase")
 string1.uppercase()

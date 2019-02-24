@@ -39,6 +39,7 @@ if myDog2.getColour() == "Unknown":
     print("Enter colour for ", myDog2.getName())
     newColour = input() 
     myDog2.setColour (newColour)
+#next
 print(myDog2.getName(), "is", myDog2.getColour())
 
 class Puppy(Dog):

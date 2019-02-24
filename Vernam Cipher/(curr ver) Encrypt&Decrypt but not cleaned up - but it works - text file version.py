@@ -148,7 +148,7 @@ def SalieriDec(text,key):
             fbtemptrs = "0" + fbtemptrs
         #endwhile
         binaryTRSa.append(fbtemptrs)
-
+    #next
 
 
     encryptedXOR = ''
@@ -160,7 +160,9 @@ def SalieriDec(text,key):
                 encryptedXOR = encryptedXOR + '1'
             else:
                 encryptedXOR = encryptedXOR + '0'
-                
+            #endif
+        #next
+    #next
 
         encryptedBinary.append(encryptedXOR)
         
@@ -180,7 +182,7 @@ def SalieriDec(text,key):
         temp = int(encryptedBinary[counter], 2)
         temp = chr(temp)
         encryptedLetters = encryptedLetters + temp
-
+    #next
 
     print ("Decrypted Message: " + encryptedLetters)
 
@@ -202,16 +204,20 @@ while end == False:
         first = input('Encrypt ("e") or Decrypt ("d")?\n')
         if first == "e" or first == "d":
             inp = True
+        #endif
+    #endwhile
 
     if first == "e":
         encodee = input("Message To Encode:\n")
         SalieriEnc(encodee)
+    
 
     elif first == "d":
         
         text = input("Enter Encrypted Text:\n")
         key = input("Enter the key:\n")
         SalieriDec(text,key)
+    #endif
 
     inp = False
     tempend = input('Finished? - Yes ("y") or No ("n")\n')
@@ -223,10 +229,13 @@ while end == False:
         end = False
     else:
         inp = False
+    #endif
     while inp == False:
         tempend = input('Finished? - Yes ("y") or No ("n")\n')
         if tempend == "y" or tempend == "n":
             inp = True
+        #endif
+    #endwhile
 
     if tempend == ("y"):
         inp = True
@@ -234,6 +243,7 @@ while end == False:
     elif tempend == ("n"):
         inp = True
         end = False
+    #endif
     
     
 

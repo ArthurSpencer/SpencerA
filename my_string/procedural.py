@@ -11,5 +11,6 @@ for counter in range (0, len(string)):
         letter = letter - 32
         letter = chr(letter)
         binaryholder[counter] = letter
+    #endif
 #next
 print (binaryholder)
