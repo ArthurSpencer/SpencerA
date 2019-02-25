@@ -28,14 +28,20 @@ def chooseaccount():
     clear()
     c.execute("Select username FROM profiles")
     accountlist = (c.fetchall())
-    print (accountlist)
+    c.execute("Select username FROM profiles")
+    display = (c.fetchall())
+
+
     #### Scary Loop
     
     leng = len(accountlist)
 
     for counter in range(leng):
-        changevariable = str(accountlist[counter])
+        changevariable = str(accountlist[counter]).lower()
         accountlist[counter] = changevariable
+    
+    #print(accountlist) # otherwise lowercase
+    print(display)
 
     #### End of Scary Loop
     ####
@@ -43,7 +49,7 @@ def chooseaccount():
 
     accountinput = input("Choose your account\n")
 
-    profinput = "('" + accountinput + "',)"
+    profinput = ("('" + accountinput + "',)").lower()
     #print(profinput)
 
     clear()
@@ -53,6 +59,7 @@ def chooseaccount():
     #print(accountinput)
     #print(profinput)
 
+
     ####
     #If I convert it to a str then whole list format becomes string as is really janky - dont use
     #
@@ -60,29 +67,37 @@ def chooseaccount():
     #Then add it into the loop below - also lower case --- Sp should not pass SpencerA
     while profinput not in (accountlist):
         #clear()
-        print(accountlist)
+        print(display)
         accountinput = input("Choose an account from the list\n")
-    c.execute("SELECT * FROM profiles WHERE username=:accountinput", {'accountinput': accountinput})
+        profinput = ("('" + accountinput + "',)").lower()
+
+
+    #c.execute("SELECT * FROM profiles WHERE username=:accountinput", {'accountinput': accountinput})
+    c.execute("SELECT * FROM profiles WHERE username LIKE :accountinput", {'accountinput': accountinput}) #lowercase stuff
     accountfetch = c.fetchall()
 
     clear()
 
     print("Logging In")
-    print(accountfetch)
-    inp = input("hi")
-    print(accountfetch)
-    username = accountfetch[0]
-    email = accountfetch[1]
-    emailtime = accountfetch[2]
+    #print(accountfetch)
+    #print(accountfetch[0])
+    username = accountfetch[0][0] ###ITS A DAMN NESTED LIST YA FOOL
+    email = accountfetch[0][1]
+    emailtime = accountfetch[0][2]
     acc_1 = profile(username,email,emailtime)
 
     #
-    print(acc_1.getUsername())
-    print(acc_1.getEmail())
-    print(acc_1.getEmailtime())
+    print("Your username is:", acc_1.getUsername())
+    print("Your email is:", acc_1.getEmail())
+    print("You will be sent an email at:",acc_1.getEmailtime())
+    print("")
+
     #
 
     #variables need to be passed to the class/object
+
+    return acc_1
+
     pass
 
 #Allows the user to make an account (details go into database)
@@ -155,8 +170,9 @@ def makeaccount():
         print("Enter '/' once you have finished")
 
     
-
-
+def insideaccount(acc_1):
+    print("Inside Second", acc_1.getUsername())
+    pass
 
 #Making the tables """ """ allows for comments over multiple lines
 
@@ -204,7 +220,7 @@ def starter():
 yn = starter()
 check = checkaccount()
 if (yn == "yes") and (check != "None"):
-    chooseaccount()
+    acc_1 = chooseaccount() # The account that is being used and the details of it are passed to main program -> can then be sent off to another function - actuall process of what you want to do
 elif (yn == "yes") and (check == "None"):
     print("You need to make an account, none are stored")
     makeaccount()
@@ -213,3 +229,6 @@ else:
     makeaccount()
     chooseaccount()
 #endif
+
+print("Outside", acc_1.getUsername())
+insideaccount(acc_1)
