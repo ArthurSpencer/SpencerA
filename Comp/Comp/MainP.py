@@ -27,9 +27,60 @@ def checkaccount():
 def chooseaccount():
     clear()
     c.execute("Select username FROM profiles")
-    print(c.fetchall())
-    print("Choose your account")
+    accountlist = (c.fetchall())
+    print (accountlist)
+    #### Scary Loop
+    
+    leng = len(accountlist)
 
+    for counter in range(leng):
+        changevariable = str(accountlist[counter])
+        accountlist[counter] = changevariable
+
+    #### End of Scary Loop
+    ####
+    #print(accountlist)
+
+    accountinput = input("Choose your account\n")
+
+    profinput = "('" + accountinput + "',)"
+    #print(profinput)
+
+    clear()
+
+    #print(accountlist)
+    #print(str(accountlist[1]))
+    #print(accountinput)
+    #print(profinput)
+
+    ####
+    #If I convert it to a str then whole list format becomes string as is really janky - dont use
+    #
+    #Need to convert the list to a better form - so don't get an error from it not being an actual username but letters in the username
+    #Then add it into the loop below - also lower case --- Sp should not pass SpencerA
+    while profinput not in (accountlist):
+        #clear()
+        print(accountlist)
+        accountinput = input("Choose an account from the list\n")
+    c.execute("SELECT * FROM profiles WHERE username=:accountinput", {'accountinput': accountinput})
+    accountfetch = c.fetchall()
+
+    clear()
+
+    print("Logging In")
+    print(accountfetch)
+    inp = input("hi")
+    print(accountfetch)
+    username = accountfetch[0]
+    email = accountfetch[1]
+    emailtime = accountfetch[2]
+    acc_1 = profile(username,email,emailtime)
+
+    #
+    print(acc_1.getUsername())
+    print(acc_1.getEmail())
+    print(acc_1.getEmailtime())
+    #
 
     #variables need to be passed to the class/object
     pass
