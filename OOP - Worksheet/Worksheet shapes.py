@@ -5,9 +5,10 @@ class Shape():
         self.colourOutline = myColourOutline
     #enddef
     
-    def calculateArea(self, mySide):
+    def calculateArea(self, mySide):  # This is a procedure, so it should have end procedure
         self.area = mySide * mySide      
-    #enddef
+    #end procedure
+#End Class
 
 class Rectangle(Shape):
     def __init__(self, myColourFill, myColourOutline, myHeight,myWidth):
