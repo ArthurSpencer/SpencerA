@@ -1,3 +1,5 @@
+#Good attempt, but I wanted you to have the string attribute as a list...
+
 class stri():
     
     def __init__(self, string):
