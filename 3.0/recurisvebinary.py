@@ -12,7 +12,7 @@ def bin(li, search, mid):
         else:
             return bin(li, search, mid +1)
         #endif
-
+#endfunction
 
 
 mid = 0

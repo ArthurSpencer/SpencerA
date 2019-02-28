@@ -10,6 +10,7 @@ def display_secret_word(secret_word, guesses):
             print(letter, sep=' ', end='', flush=True)
         else:
             print ("_ ", sep=' ', end='', flush=True)
+#endprocedure
 
 def display_hangman(incorrect_guesses):
 
@@ -74,7 +75,7 @@ def display_hangman(incorrect_guesses):
             print("|___")
               
         #endif
-    
+#endprocedure   
 
     
 words = ['bop', 'house', 'mouth', 'bone', 'mode', 'modular']

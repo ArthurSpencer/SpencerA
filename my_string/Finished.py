@@ -2,7 +2,7 @@ class stri():
     
     def __init__(self, string):
         self.string = string
-    #enddef
+    #endprocedure
         
     def uppercase(self):
         binaryholder = list(self.string)
@@ -13,7 +13,7 @@ class stri():
             #endif
         #next
         self.string = (binaryholder)
-    #enddef
+    #endprocedure
     
     def lowercase(self):
         binaryholder = list(self.string)
@@ -24,19 +24,19 @@ class stri():
             #endif
         #next
         self.string = (binaryholder)
-    #enddef
+    #endprocedure
 
     def get_string(self):
         return "".join(self.string)
-    #enddef
+    #endfunction
 
     def set_string(self, new):
         self.string = new
-    #enddef
+    #endfunction
 
     def set_char(self, position, char):
         self.string[position] = char
-    #enddef
+    #endfunction
 
 string1 = stri("UfDSd")
 string1.lowercase()

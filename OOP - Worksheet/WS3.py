@@ -27,7 +27,7 @@ class Dog():
     
     def printDogDetails(self):
         print (self.p_name, self.p_colour)
-    #endfunction
+    #endprocedure
 
 #end class
 

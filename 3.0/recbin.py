@@ -18,7 +18,7 @@ def recbin(li, find, first, last):
         print ("not present")
         return -1
     #endif
-        
+#endrunction        
     
 #li = [1,2,3,4,5,6,7,8]
 li = [2,5,6,7,9,10,15,17,18,19]
