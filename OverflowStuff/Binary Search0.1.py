@@ -17,6 +17,7 @@ def binarySearch(aList, itemSought):
         #endif
     #endwhile
     return index
+#endfunction
 
 aList = [0,1,2,3,4,5,6,7]
 itemSought = 3
