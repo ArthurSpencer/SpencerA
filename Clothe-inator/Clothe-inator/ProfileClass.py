@@ -50,7 +50,7 @@ class profile():
     #need to return to start()
     #endprocedure
 
-    def updater(self, field, newvalue)
+    def updater(self, field, newvalue):
         pass
     
     #Use same principal from clothing with un, em, emt and algt all pointing to updater

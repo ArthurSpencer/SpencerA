@@ -7,23 +7,23 @@ class clothing():
         self.temprangemin = temprangemin
         self.temprangemax = temprangemax
 
-    def getUsername:
+    def getUsername(self):
         return self.username
     #endfunction
 
-    def getClothingName:
+    def getClothingName(self):
         return self.clothingname
     #endfunction
 
-    def getClothingTypeKey:
+    def getClothingTypeKey(self):
         return self.clothingtypekey
     #endfunction
 
-    def getTempRangeMin:
+    def getTempRangeMin(self):
         return self.temprangemin
     #endfunction
 
-    def getTempRangeMax:
+    def getTempRangeMax(self):
         return self.temprangemax
     #endfunction
 
@@ -32,12 +32,12 @@ class clothing():
     # go to updater()
     #endprocedure
 
-    def setClothingTypeKey(self, clothingname)
+    def setClothingTypeKey(self, clothingname):
        pass
    #go to updater()
    #endprocedure
 
-    def delete:
+    def delete():
         pass
     #need to return to clothingdetails()
     #endprocedure 
