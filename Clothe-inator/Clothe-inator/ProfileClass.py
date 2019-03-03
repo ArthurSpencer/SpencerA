@@ -17,7 +17,7 @@ class profile():
         return self.email
     #endfunction
 
-    def getEmailtime(self):
+    def getEmailTime(self):
         return self.emailtime
     #endfunction
 
