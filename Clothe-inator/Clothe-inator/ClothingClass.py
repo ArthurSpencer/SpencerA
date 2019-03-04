@@ -3,7 +3,7 @@ class clothing():
     def __init__(self, username, clothingname, clothingtypekey, temprangemin, temprangemax):
         self.username = username
         self.clothingname = clothingname
-        self.bodycat = bodycat
+        self.clothingtypekey = clothingtypekey
         self.temprangemin = temprangemin
         self.temprangemax = temprangemax
 
