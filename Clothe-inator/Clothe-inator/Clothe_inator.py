@@ -350,21 +350,40 @@ def profilemenu(acc_1):
     #if timer gets to 0 - activate rec function
     
     #alarmtime = '06:00'
-    currenttime = (datetime.datetime.now().strftime('%H:%M'))
     #print(currenttime)
+
+
+    currenttime = (datetime.datetime.now().strftime('%H:%M'))
+    
     FMT = '%H:%M'
     timertime = datetime.datetime.strptime(emailtime, FMT) - datetime.datetime.strptime(currenttime, FMT)
 
-    timertime = ((timertime) + datetime.timedelta(days=1))
+
+
+    ###
+
+    if timertime < datetime.timedelta(days=0):
+        timertime = ((timertime) + datetime.timedelta(days=1))
+        pass
+    
 
     #t = timeit.Timer(timertime,reccomend)
     
     #st = input("stop")
 
     timertime = str(timertime)
+    #print(timertime)
     h, m, s = timertime.split(':')
+    
+    ####
     seconds = (int(h) * 3600) + (int(m) * 60) + (int(s))
+    ####
 
+    #print(h)
+    #print(m)
+    #print(s)
+    
+    #stop = input("stop")
 
     #print(timertime)
     #print(seconds)
@@ -374,6 +393,12 @@ def profilemenu(acc_1):
     t.start()
     
     clear()
+
+    ####
+    #print(timertime)
+    ####
+
+
     ans = False
     while ans == False:
         print("Your username is:", acc_1.getUsername())
