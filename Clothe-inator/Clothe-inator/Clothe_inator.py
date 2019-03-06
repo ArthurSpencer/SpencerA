@@ -505,7 +505,7 @@ def profilemenu(acc_1):
         """)
         action = input("Choose your Option\n")
         if action == "1":
-            clothingdetailsoptions()
+            clothingdetailsoptions(acc_1)
             ans = True
             pass
         elif action == "2":
@@ -513,7 +513,7 @@ def profilemenu(acc_1):
             ans = True
             pass
         elif action == "3":
-            reccomend()
+            reccomend(acc_1)
             ans = True
             pass
         elif action == "4":
@@ -586,19 +586,61 @@ def profiledetails(acc_1):
 #if account deleted - everything in database with that username must be deleted 
 #User then would be passed back to start
 
-def clothingdetailsoptions():
-    print("""
-    (1) Edit Clothing
-    (2) Edit Profile
-    (3) Reccomendation Now
-    (4) Starting Menu
-    (5) Quit
+def clothingdetailsoptions(acc_1):
+    clear()
+    exit = False
+    while exit == False:
 
-    """)
+        ### Getting clothes
+        c.execute ("Select clothingname from itemtable where username =:username", {'username': acc_1.username})
+        
+        firstclothingnamelist = (c.fetchall())
+        lenoffirstclothingnamelist = len(firstclothingnamelist)
+        secondlist = []
+        for counter in range(lenoffirstclothingnamelist):
+            toadd = ("( " + str(counter + 1) + " ) " + firstclothingnamelist[counter][0]
+            if toadd not in secondlist:
+                secondlist.append(toadd)
+
+    
+        print(firstclothingnamelist)
+        print(secondlist)
+
+        stop = input("stop")
+
+
+
+
+        possible = [1,2,3,4,5]
+        print("""
+        (1) Edit Clothing
+        (2) Edit Profile
+        (3) Reccomendation Now
+        (4) Starting Menu
+        (5) Quit
+
+        """)
+        selection = input("What would you like to do?\n")
+        check = checkaccount()
+        if (selection == "1") and (check != "None"):
+            clear()
+            chooseaccount()
+        elif (selection == "1") and (check == "None"):
+            clear()
+            print("You need to make an account, none are stored")
+            makeaccount()
+            chooseaccount()
+        elif (selection == "2"):
+            clear()
+            makeaccount()
+            chooseaccount()
+        else:
+            print("This number option cannot be selected")
+
     pass
 #Lists clothing and then: lets user pick a piece of clothing from that list - 
 
-def clothingdetails():
+def clothingdetails(acc_1):
     pass
 #Shows stuff about that particular piece of clothing
 #User can then change the name or type of the clothing - depending on which decision is chosen, passes to different proc in class
@@ -721,7 +763,7 @@ def clothingtypechoosersubmenu(ctc, makeacc):
         
 
 
-def reccomend():
+def reccomend(acc_1):
     clear()
     #print("It worked")
     clear()
