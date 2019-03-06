@@ -586,6 +586,9 @@ def profiledetails(acc_1):
 #if account deleted - everything in database with that username must be deleted 
 #User then would be passed back to start
 
+
+
+
 def clothingdetailsoptions(acc_1):
     clear()
     exit = False
@@ -597,50 +600,108 @@ def clothingdetailsoptions(acc_1):
         firstclothingnamelist = (c.fetchall())
         lenoffirstclothingnamelist = len(firstclothingnamelist)
         secondlist = []
+        optionlist = []
         for counter in range(lenoffirstclothingnamelist):
-            toadd = ("( " + str(counter + 1) + " ) " + firstclothingnamelist[counter][0]
+            optionlist.append(str(counter + 1))
+            toadd = ("( " + str(counter + 1) + " ) " + firstclothingnamelist[counter][0])
             if toadd not in secondlist:
                 secondlist.append(toadd)
+            
+        #Could make a function that sorts the items into category - for another time / not needed
+    
+        print("Clothing Library:")
+        print(secondlist)
+        rng = len(secondlist)
+
+        print("( + ) Add New Item")
+        print("( / ) Back to Main Menu")
+        
+        
+        selection = input("Select an item to edit or delete\n")
+        check = checkaccount()
+        if selection == "/":
+            clear()
+            profilemenu(acc_1)
+        if selection == "+":
+            clear()
+
+        if selection not in optionlist:
+            clear()
+            print("This number option cannot be selected")
+            
+        else:
+            selection = int(selection) - 1
+            item = str(firstclothingnamelist[selection][0])
+            clothingdetails(acc_1, item)
 
     
-        print(firstclothingnamelist)
-        print(secondlist)
-
-        stop = input("stop")
-
-
-
-
-        possible = [1,2,3,4,5]
-        print("""
-        (1) Edit Clothing
-        (2) Edit Profile
-        (3) Reccomendation Now
-        (4) Starting Menu
-        (5) Quit
-
-        """)
-        selection = input("What would you like to do?\n")
-        check = checkaccount()
-        if (selection == "1") and (check != "None"):
-            clear()
-            chooseaccount()
-        elif (selection == "1") and (check == "None"):
-            clear()
-            print("You need to make an account, none are stored")
-            makeaccount()
-            chooseaccount()
-        elif (selection == "2"):
-            clear()
-            makeaccount()
-            chooseaccount()
-        else:
-            print("This number option cannot be selected")
-
-    pass
 #Lists clothing and then: lets user pick a piece of clothing from that list - 
 
-def clothingdetails(acc_1):
+def clothingdetails(acc_1, item):
+    
+    c.execute("SELECT * FROM itemtable WHERE clothingname =:item AND username = :username", {'item': item, 'username': acc_1.username}) #lowercase stuff
+    itemfetch = c.fetchall()
+    
+    #print(item)
+    #print(itemfetch)
+    #stop = input("stop")
+
+    username = itemfetch[0][0] 
+    clothingname = itemfetch[0][1]
+    clothingtypekey = itemfetch[0][2]
+    temprangemin = itemfetch[0][3]
+    temprangemax = itemfetch[0][4]
+    cl_2 = clothing(username,clothingname,clothingtypekey,temprangemin,temprangemax)
+    print(cl_2.username)
+    print(cl_2.clothingname)
+    print(cl_2.clothingtypekey)
+    #stop = input("stop")
+
+    exit = False
+    while exit == False:
+        clear()
+        print("For this piece of clothing:")
+        print("")
+        print("( 1 ) Edit Clothing Name:", cl_2.clothingname)
+        print("( 2 ) Edit Clothing Type:", cl_2.clothingtypekey)
+        print("( 3 ) Delete")
+        print("( / ) Back to Clothing Library")
+        print("")
+
+        action = input("What would you like to do?\n")
+        if action == "1":
+            newname = input("What would you like the new item name to be?")
+            cl_2.setClothingName(newname)
+            pass
+        elif action == "2":
+            newtype = clothingtypechoosermenu(True)
+            cl_2.setClothingTypeKey(newtype)
+            pass
+        elif action == "3":
+
+            secexit = False
+            while secexit == False:
+                print("( 1 ) Delete", cl_2.clothingname)
+                print("( / ) Back to Edit Item")
+                selection = input("What would you like to do?\n")
+                if (selection == "1"): 
+                    clear()
+                    cl_2.delete
+                    clothingdetailsoptions(acc_1)
+                elif (selection == "/"):
+                    clothingdetails(acc_1, item)
+                else:
+                    print("This number option cannot be selected")
+        elif action == "/":
+            clear()
+            clothingdetailsoptions(acc_1)
+            pass
+        else: 
+            pass
+        
+
+
+
     pass
 #Shows stuff about that particular piece of clothing
 #User can then change the name or type of the clothing - depending on which decision is chosen, passes to different proc in class
@@ -672,7 +733,7 @@ def clothingtypechoosermenu(makeacc):
         for counter in range(lenofsecondlist):
             optionlist.append(str(counter + 1))
             print("(", counter + 1, ")", secondlist[counter] )    
-        print("( / )", "Exit")
+        #print("( / )", "Exit")
 
         #print(lenofsecondlist)
         #print(secondlist[lenofsecondlist - 1])
