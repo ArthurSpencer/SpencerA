@@ -153,9 +153,14 @@ def start():
     exit = False
     while exit == False:
         possible = [1,2]
-        print("( 1 ) Choose Account")
-        print("( 2 ) Make Account")
-        selection = input("What would you like to do?\n")
+
+        print("""
+    Clothe-inator
+
+        ( 1 ) Choose Account
+        ( 2 ) Make Account
+        """)
+        selection = input("    What would you like to do?\n")
         check = checkaccount()
         if (selection == "1") and (check != "None"):
             clear()
@@ -499,11 +504,11 @@ def profilemenu(acc_1):
         (1) Edit Clothing
         (2) Edit Profile
         (3) Reccomendation Now
-        (4) Starting Menu
-        (5) Quit
+        (M) Starting Menu
+        (X) Quit
 
         """)
-        action = input("Choose your Option\n")
+        action = input("Choose your Option\n").lower()
         if action == "1":
             clothingdetailsoptions(acc_1)
             ans = True
@@ -516,13 +521,13 @@ def profilemenu(acc_1):
             reccomend(acc_1)
             ans = True
             pass
-        elif action == "4":
+        elif action == "m":
             t.cancel()
             clear()
             start()
             ans = True
             pass
-        elif action == "5":
+        elif action == "x":
             raise SystemExit
             ans = True
             pass
@@ -545,14 +550,15 @@ def profiledetails(acc_1):
         clear()
         print("Your Profile details are:")
         print("")
-        print("(1) Username:", acc_1.username)
-        print("(2) Email:", acc_1.email)
-        print("(3) Time of Email:", acc_1.emailtime)
-        print("(4) Algorithm Type:", acc_1.algtype)
-        print("(/) Back to Menu")
+        print("( 1 ) Username:", acc_1.username)
+        print("( 2 ) Email:", acc_1.email)
+        print("( 3 ) Time of Email:", acc_1.emailtime)
+        print("( 4 ) Algorithm Type:", acc_1.algtype)
+        print("( X ) Delete Account")
+        print("( / ) Back to Menu")
         print("")
 
-        action = input("What would you like to change?\n")
+        action = input("What would you like to change?\n").lower()
         if action == "1":
             attribute = "username"
             username = verification(attribute) 
@@ -572,6 +578,25 @@ def profiledetails(acc_1):
             acc_1.setAlgType
             #Add validation
             pass
+
+        elif action == "x":
+            clear()
+            secexit = False
+            while secexit == False:
+                print("( X ) Are you sure? - Delete", acc_1.username)
+                print("( / ) Back to Edit Item")
+                selection = input("What would you like to do?\n").lower()
+                if (selection == "x"): 
+                    clear()
+                    acc_1.deleteself
+                    start()
+                elif (selection == "/"):
+                    clear()
+                    profiledetails(acc_1)
+                else:
+                    clear()
+                    print("This option cannot be selected")
+
         elif action == "/":
             clear()
             profilemenu(acc_1)
@@ -622,16 +647,19 @@ def clothingdetailsoptions(acc_1):
         if selection == "/":
             clear()
             profilemenu(acc_1)
-        if selection == "+":
+        elif selection == "+":
+            clear()
+            additem(acc_1)
             clear()
 
-        if selection not in optionlist:
+        elif selection not in optionlist:
             clear()
             print("This number option cannot be selected")
             
         else:
             selection = int(selection) - 1
             item = str(firstclothingnamelist[selection][0])
+            clear()
             clothingdetails(acc_1, item)
 
     
@@ -652,46 +680,48 @@ def clothingdetails(acc_1, item):
     temprangemin = itemfetch[0][3]
     temprangemax = itemfetch[0][4]
     cl_2 = clothing(username,clothingname,clothingtypekey,temprangemin,temprangemax)
-    print(cl_2.username)
-    print(cl_2.clothingname)
-    print(cl_2.clothingtypekey)
+    #print(cl_2.username)
+    #print(cl_2.clothingname)
+    #print(cl_2.clothingtypekey)
     #stop = input("stop")
 
     exit = False
     while exit == False:
-        clear()
         print("For this piece of clothing:")
         print("")
         print("( 1 ) Edit Clothing Name:", cl_2.clothingname)
         print("( 2 ) Edit Clothing Type:", cl_2.clothingtypekey)
-        print("( 3 ) Delete")
+        print("( X ) Delete")
         print("( / ) Back to Clothing Library")
         print("")
 
-        action = input("What would you like to do?\n")
+        action = input("What would you like to do?\n").lower()
         if action == "1":
+            clear()
             newname = input("What would you like the new item name to be?")
             cl_2.setClothingName(newname)
             pass
         elif action == "2":
+            clear()
             newtype = clothingtypechoosermenu(True)
             cl_2.setClothingTypeKey(newtype)
             pass
-        elif action == "3":
-
+        elif action == "x":
+            clear()
             secexit = False
             while secexit == False:
-                print("( 1 ) Delete", cl_2.clothingname)
+                print("( X ) Are you sure? - Delete", cl_2.clothingname)
                 print("( / ) Back to Edit Item")
-                selection = input("What would you like to do?\n")
-                if (selection == "1"): 
+                selection = input("What would you like to do?\n").lower()
+                if (selection == "x"): 
                     clear()
                     cl_2.delete
                     clothingdetailsoptions(acc_1)
                 elif (selection == "/"):
                     clothingdetails(acc_1, item)
                 else:
-                    print("This number option cannot be selected")
+                    clear()
+                    print("This option cannot be selected")
         elif action == "/":
             clear()
             clothingdetailsoptions(acc_1)
@@ -772,6 +802,28 @@ def clothingtypechoosermenu(makeacc):
             return ctk
             stop = input("stop")
         
+def additem(acc_1):
+    clothinglist = []
+    end = False
+    while end == False:
+        makeacc = True
+        cl_1 = enterclothing(acc_1.username, makeacc)
+        c.execute("INSERT INTO itemtable VALUES (:username, :clothingname, :clothingtypekey, :temprangemin, :temprangemax)", {'username': cl_1.username, 'clothingname': cl_1.clothingname, 'clothingtypekey': cl_1.clothingtypekey, 'temprangemin': cl_1.temprangemin, 'temprangemax': cl_1.temprangemax})
+        conn.commit()
+        clear()
+        clothinglist.append(cl_1.clothingname)
+        inploop = True
+        while inploop == True:
+            print("You have entered ", clothinglist)
+            ans = input("Another? (y/n)").lower()
+            if ans == "y":
+                end = False
+                inploop = False
+            elif ans == "n":
+                end = True
+                inploop = False
+            else:
+                clear()
 
 def clothingtypechoosersubmenu(ctc, makeacc):
     clear()
