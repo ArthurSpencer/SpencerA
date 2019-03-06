@@ -150,23 +150,45 @@ def tablemaker():
 
 
 def start():
-    yn = input("Do you already have a profile?\n").lower()
-    while yn not in ["yes","no"]:
-        yn = input("Do you already have a profile? - enter Yes or No\n").lower()
-    check = checkaccount()
-    if (yn == "yes") and (check != "None"):
-        clear()
-        chooseaccount()
-    elif (yn == "yes") and (check == "None"):
-        clear()
-        print("You need to make an account, none are stored")
-        makeaccount()
-        chooseaccount()
-    else:
-        clear()
-        makeaccount()
-        chooseaccount()
-    pass
+    exit = False
+    while exit == False:
+        possible = [1,2]
+        print("( 1 ) Choose Account")
+        print("( 2 ) Make Account")
+        selection = input("What would you like to do?\n")
+        check = checkaccount()
+        if (selection == "1") and (check != "None"):
+            clear()
+            chooseaccount()
+        elif (selection == "1") and (check == "None"):
+            clear()
+            print("You need to make an account, none are stored")
+            makeaccount()
+            chooseaccount()
+        elif (selection == "2"):
+            clear()
+            makeaccount()
+            chooseaccount()
+        else:
+            print("This number option cannot be selected")
+
+        #yn = input("Do you already have a profile?\n").lower()
+        #while yn not in ["yes","no"]:
+        #    yn = input("Do you already have a profile? - enter Yes or No\n").lower()
+        #check = checkaccount()
+        #if (yn == "yes") and (check != "None"):
+        #    clear()
+        #    chooseaccount()
+        #elif (yn == "yes") and (check == "None"):
+        #    clear()
+        #    print("You need to make an account, none are stored")
+        #    makeaccount()
+        #    chooseaccount()
+        #else:
+        #    clear()
+        #    makeaccount()
+        #    chooseaccount()
+        #pass
 #Gives option to either makeaccount() or allows the user to chooseaccount() as long as checkaccount() does not pass None (as long as accounts exist)
 
 def checkaccount():
@@ -181,13 +203,13 @@ def checkaccount():
 def makeaccount():
    print("Time to make your Account!")
    attribute = "username"
-   username = verification(attribute)
+   username = input("Enter Username\n")
    c.execute("Select * FROM profiletable WHERE username =:username", {'username': username})
    checkusername = (str(c.fetchone()))
    #If check does not equal to none then that username must already exist in some form
    while checkusername != "None":
        username = input("That username is already in use, please choose another\n")
-       username = verification(attribute)
+       username = input("Enter Username\n")
        c.execute("Select * FROM profiletable WHERE username =:username", {'username': username})
        checkusername = (str(c.fetchone()))
     #endwhile
@@ -267,70 +289,138 @@ def enterclothing(username, makeacc):
 
 def chooseaccount():
     clear()
+
     c.execute("Select username FROM profiletable")
-    accountlist = (c.fetchall())
-    c.execute("Select username FROM profiletable")
-    display = (c.fetchall())
+    queryoutput = (c.fetchall())
+    lenofqueryoutput = len(queryoutput)
 
+    #print(queryoutput)
+    #print(lenofqueryoutput)
+    #stop = input("stop")
 
-    #### Scary Loop
+    accountlist = []
+    for counter in range(lenofqueryoutput):
+        toadd = queryoutput[counter][0]
+        if toadd not in accountlist:
+            accountlist.append(toadd)
+        pass
+    print("Which account would you like to use?")
+    exit = False
+    while exit == False:
+        lenofaccountlist = len(accountlist)
+        optionlist = []
+        for counter in range(lenofaccountlist):
+            optionlist.append(str(counter + 1))
+            print("(", counter + 1, ")", accountlist[counter] )    
+        print("( / )", "Start Menu")
     
-    leng = len(accountlist)
+        selection = input("Choose your account\n")
+        if selection == "/":
+            clear()
+            start()
+        elif selection not in optionlist:
+            clear()
+            print("This number option cannot be selected")
+        else:
+            selection = int(selection) - 1
+            accountinput = (accountlist[selection])
+            #stop = input("stop")
 
-    for counter in range(leng):
-        changevariable = str(accountlist[counter]).lower()
-        accountlist[counter] = changevariable
-    
-    #print(accountlist) # otherwise lowercase
-    print(display)
-    print("( / ) to exit to start")
-    #### End of Scary Loop
-    ####
-    #print(accountlist)
-
-    accountinput = input("Choose your account\n")
-
-    if accountinput == "/":
-        clear()
-        start()
-
-
-    profinput = ("('" + accountinput + "',)").lower()
-    #print(profinput)
-
-    clear()
-
-    #print(accountlist)
-    #print(str(accountlist[1]))
-    #print(accountinput)
-    #print(profinput)
-
-
-    ####
-    #If I convert it to a str then whole list format becomes string as is really janky - dont use
-    #
-    #Need to convert the list to a better form - so don't get an error from it not being an actual username but letters in the username
-    #Then add it into the loop below - also lower case --- Sp should not pass SpencerA
-    while profinput not in (accountlist):
-        #clear()
-        print(display)
-        accountinput = input("Choose an account from the list\n")
-        profinput = ("('" + accountinput + "',)").lower()
-
-    clear()
-    print("")
-
-    c.execute("SELECT * FROM profiletable WHERE username LIKE :accountinput", {'accountinput': accountinput}) #lowercase stuff
-    accountfetch = c.fetchall()
+            c.execute("SELECT * FROM profiletable WHERE username LIKE :accountinput", {'accountinput': accountinput}) #lowercase stuff
+            accountfetch = c.fetchall()
     
 
-    username = accountfetch[0][0] 
-    email = accountfetch[0][1]
-    emailtime = accountfetch[0][2]
-    algtype = accountfetch[0][3]
-    acc_1 = profile(username,email,emailtime,algtype)
+            username = accountfetch[0][0] 
+            email = accountfetch[0][1]
+            emailtime = accountfetch[0][2]
+            algtype = accountfetch[0][3]
+            acc_1 = profile(username,email,emailtime,algtype)
 
-    profilemenu(acc_1)
+            profilemenu(acc_1)
+
+
+        
+
+
+     
+
+
+
+
+
+
+    ########################################################################################################################################### -- Disgusting Code
+
+    #c.execute("Select username FROM profiletable")
+    #accountlist = (c.fetchall())
+    #c.execute("Select username FROM profiletable")
+    #display = (c.fetchall())
+
+
+
+
+    ##### Scary Loop
+    
+    #leng = len(accountlist)
+
+    #for counter in range(leng):
+    #    changevariable = str(accountlist[counter]).lower()
+    #    accountlist[counter] = changevariable
+    
+    ##print(accountlist) # otherwise lowercase
+    #print(display)
+    #print("( / ) to exit to start")
+    ##### End of Scary Loop
+    #####
+    ##print(accountlist)
+
+    #accountinput = input("Choose your account\n")
+
+    #if accountinput == "/":
+    #    clear()
+    #    start()
+
+
+    #profinput = ("('" + accountinput + "',)").lower()
+    ##print(profinput)
+
+    #clear()
+
+    ##print(accountlist)
+    ##print(str(accountlist[1]))
+    ##print(accountinput)
+    ##print(profinput)
+
+
+    #####
+    ##If I convert it to a str then whole list format becomes string as is really janky - dont use
+    ##
+    ##Need to convert the list to a better form - so don't get an error from it not being an actual username but letters in the username
+    ##Then add it into the loop below - also lower case --- Sp should not pass SpencerA
+    #while profinput not in (accountlist):
+    #    #clear()
+    #    print(display)
+    #    accountinput = input("Choose an account from the list\n")
+    #    profinput = ("('" + accountinput + "',)").lower()
+
+    #clear()
+    #print("")
+
+    ########################################################################################################################################### -- Disgusting Code
+
+
+
+    #c.execute("SELECT * FROM profiletable WHERE username LIKE :accountinput", {'accountinput': accountinput}) #lowercase stuff
+    #accountfetch = c.fetchall()
+    
+
+    #username = accountfetch[0][0] 
+    #email = accountfetch[0][1]
+    #emailtime = accountfetch[0][2]
+    #algtype = accountfetch[0][3]
+    #acc_1 = profile(username,email,emailtime,algtype)
+
+    #profilemenu(acc_1)
 
 
 #Choose account from list
