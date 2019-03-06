@@ -1,11 +1,20 @@
+import sqlite3
+#Connect to the database
+conn = sqlite3.connect('databaseofneededstuff.db', check_same_thread=False)
+#Some sort of abstract thing that acts as the link between database and program
+c = conn.cursor()
+
 class clothing():
     """This class contains all the functions needed to do stuff with clothing items"""
     def __init__(self, username, clothingname, clothingtypekey, temprangemin, temprangemax):
+        
         self.username = username
         self.clothingname = clothingname
         self.clothingtypekey = clothingtypekey
         self.temprangemin = temprangemin
         self.temprangemax = temprangemax
+        
+
 
     def getUsername(self):
         return self.username
@@ -32,8 +41,15 @@ class clothing():
     # go to updater()
     #endprocedure
 
-    def setClothingTypeKey(self, clothingname):
-       pass
+    def setClothingTypeKey(self, clothingtypekey):
+        
+        #c.execute ("UPDATE itemtable SET clothingtypekey = : clothingtypekey WHERE clothingname = : clothingname AND username = : username", {'clothingtypekey': clothingtypekey, 'clothingname': self.clothingname, 'username': self.username})
+        c.execute("""UPDATE itemtable SET clothingtypekey = :clothingtypekey
+                    WHERE clothingname = :clothingname AND username = :username""",
+                  {'clothingtypekey': clothingtypekey, 'clothingname': self.clothingname, 'username': self.username})
+        conn.commit()
+
+        pass
    #go to updater()
    #endprocedure
 

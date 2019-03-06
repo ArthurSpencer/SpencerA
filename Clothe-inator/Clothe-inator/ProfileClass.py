@@ -1,3 +1,4 @@
+
 class profile():
     """When the choose account function is done, the account detail/obect will become the one chosen 
     and its attributes will contain all those in the table for that profile

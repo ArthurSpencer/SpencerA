@@ -666,27 +666,30 @@ def clothingdetailsoptions(acc_1):
 #Lists clothing and then: lets user pick a piece of clothing from that list - 
 
 def clothingdetails(acc_1, item):
-    
-    c.execute("SELECT * FROM itemtable WHERE clothingname =:item AND username = :username", {'item': item, 'username': acc_1.username}) #lowercase stuff
-    itemfetch = c.fetchall()
-    
-    #print(item)
-    #print(itemfetch)
-    #stop = input("stop")
-
-    username = itemfetch[0][0] 
-    clothingname = itemfetch[0][1]
-    clothingtypekey = itemfetch[0][2]
-    temprangemin = itemfetch[0][3]
-    temprangemax = itemfetch[0][4]
-    cl_2 = clothing(username,clothingname,clothingtypekey,temprangemin,temprangemax)
-    #print(cl_2.username)
-    #print(cl_2.clothingname)
-    #print(cl_2.clothingtypekey)
-    #stop = input("stop")
 
     exit = False
     while exit == False:
+
+        c.execute("SELECT * FROM itemtable WHERE clothingname =:item AND username = :username", {'item': item, 'username': acc_1.username}) #lowercase stuff
+        itemfetch = c.fetchall()
+    
+        #print(item)
+        #print(itemfetch)
+        #stop = input("stop")
+
+        username = itemfetch[0][0] 
+        clothingname = itemfetch[0][1]
+        clothingtypekey = itemfetch[0][2]
+        temprangemin = itemfetch[0][3]
+        temprangemax = itemfetch[0][4]
+        cl_2 = clothing(username,clothingname,clothingtypekey,temprangemin,temprangemax)
+        #print(cl_2.username)
+        #print(cl_2.clothingname)
+        #print(cl_2.clothingtypekey)
+        #stop = input("stop")
+
+
+
         print("For this piece of clothing:")
         print("")
         print("( 1 ) Edit Clothing Name:", cl_2.clothingname)
@@ -705,6 +708,7 @@ def clothingdetails(acc_1, item):
             clear()
             newtype = clothingtypechoosermenu(True)
             cl_2.setClothingTypeKey(newtype)
+            clear()
             pass
         elif action == "x":
             clear()
