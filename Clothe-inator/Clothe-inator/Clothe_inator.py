@@ -12,7 +12,8 @@ import timeit
 import threading
 from multiprocessing import Process
 import sys
-
+import pyowm
+owm = pyowm.OWM('19869702ff812dc8fab95ff8ddffec2f')
 
 #from datetime import datetime
 
@@ -430,7 +431,15 @@ def chooseaccount():
 
 #Choose account from list
 
+def timer(acc_1):
+    pass
+
 def profilemenu(acc_1):
+
+    ###t.cancel - to override
+
+
+    #stop = input("stop1")
     emailtime = acc_1.getEmailTime()
 
 
@@ -453,7 +462,7 @@ def profilemenu(acc_1):
     FMT = '%H:%M'
     timertime = datetime.datetime.strptime(emailtime, FMT) - datetime.datetime.strptime(currenttime, FMT)
 
-
+    #stop = input("stop2")
 
     ###
 
@@ -474,6 +483,9 @@ def profilemenu(acc_1):
     seconds = (int(h) * 3600) + (int(m) * 60) + (int(s))
     ####
 
+    print(seconds)
+    #stop = input("stop3")
+
     #print(h)
     #print(m)
     #print(s)
@@ -483,11 +495,14 @@ def profilemenu(acc_1):
     #print(timertime)
     #print(seconds)
     #st = input("stop")
-    t = threading.Timer(seconds, reccomend)
+    global t
+    t = threading.Timer(seconds, reccomend, [acc_1])
     
     t.start()
     
     clear()
+
+    #stop = input("stop4")
 
     ####
     #print(timertime)
@@ -496,6 +511,22 @@ def profilemenu(acc_1):
 
     ans = False
     while ans == False:
+
+        c.execute("SELECT * FROM profiletable WHERE username LIKE :accountinput", {'accountinput': acc_1.username}) #lowercase stuff
+        accountfetch = c.fetchall()
+    
+
+        username = accountfetch[0][0] 
+        email = accountfetch[0][1]
+        emailtime = accountfetch[0][2]
+        algtype = accountfetch[0][3]
+        acc_1 = profile(username,email,emailtime,algtype)
+
+
+
+
+
+
         print("Your username is:", acc_1.getUsername())
         print("Your email is:", acc_1.getEmail())
         print("You will be sent an email at:", acc_1.getEmailTime())
@@ -518,6 +549,7 @@ def profilemenu(acc_1):
             ans = True
             pass
         elif action == "3":
+            t.cancel()
             reccomend(acc_1)
             ans = True
             pass
@@ -533,9 +565,10 @@ def profilemenu(acc_1):
             pass
         else:
             clear()
+            profilemenu(acc_1)
             pass
 
-    t.join()
+    #t.join()
         
 
     #timertime is now how long the timer needs to be
@@ -547,6 +580,21 @@ def profilemenu(acc_1):
 def profiledetails(acc_1):
     ans = False
     while ans == False:
+
+        c.execute("SELECT * FROM profiletable WHERE username LIKE :accountinput", {'accountinput': acc_1.username}) #lowercase stuff
+        accountfetch = c.fetchall()
+    
+
+        username = accountfetch[0][0] 
+        email = accountfetch[0][1]
+        emailtime = accountfetch[0][2]
+        algtype = accountfetch[0][3]
+        acc_1 = profile(username,email,emailtime,algtype)
+
+
+
+
+
         clear()
         print("Your Profile details are:")
         print("")
@@ -570,8 +618,21 @@ def profiledetails(acc_1):
             acc_1.setEmail(email)
             pass
         elif action == "3":
-            emailtime = input("What time would you like your email?")
-            acc_1.setEmailTime
+            clear()
+            timeformat = "%H:%M"
+            inputtime = False
+            while inputtime == False:
+                
+                emailtime = input("What time would you like your email? (hh:mm) \n")
+                try: 
+                    validtime = datetime.datetime.strptime(emailtime, timeformat)
+                    inputtime = True
+                except ValueError:
+                    clear()
+                    print("Not in the correct format, please try again")
+
+            acc_1.setEmailTime(emailtime)
+            profiledetails(acc_1)
             pass
         elif action == "4":
             algtype = input("What Algorthim Type would you like?: Clo")
@@ -733,7 +794,7 @@ def clothingdetails(acc_1, item):
         else: 
             pass
         
-
+    t.join()
 
 
     pass
@@ -881,24 +942,86 @@ def clothingtypechoosersubmenu(ctc, makeacc):
 
 
 def reccomend(acc_1):
+    t.cancel()
+    #t.join()
     clear()
+
+    met = 2.3 #metabolic rate in met
+    # - This would be it for walking normally - clo value makes sense (cycling to work is 4.0 but because of energy made it skews result)
     #print("It worked")
+    temp, adjtemp, wind = weatherget()
+    #print("hi")
+    #print(temp)
+    #print(adjtemp)
+    #print(wind)
+    #print("bye")
+
+    clovalue = clocalc(adjtemp, met)
+
+    print(clovalue)
+    stop = input("stop")
+
     clear()
-    start()
+    profilemenu(acc_1)
     pass
 #Contains the calls to functions to reccomend an outfit
 
 def weatherget():
+    observation = owm.weather_at_place('London,GB')
+    w = observation.get_weather()
+    wind = w.get_wind()
+    temp = w.get_temperature('celsius')
+    #print(w)
+    #print(wind)
+    #print(temp)
+    wind = wind.get('speed')
+    temp = temp.get('temp')
+    #print(wind)
+    wind = 3.6*wind
+
+
+    #print(wind)
+    #stop = input("stop")
+
+    #print(temp)
+    
+
+    ### - Adjust for wind chill
+    if temp >= 4.8:
+        #temp = -20
+        #wind = 5
+        adjtemp = 13.12+(0.6125*temp)-(11.37*(wind**0.16))+(0.3965*temp)*(wind**0.16)
+    else:
+        adjtemp = temp
+        #one = (13.12+(0.6125(temp)))
+        #two = pow((11.37(wind), 0.16))
+        #print(adjtemp)
+        pass
+    return temp, adjtemp, wind;
+    ### - A
+
+
     pass
 #gets values for windspeed and temperature
 #if windspeed > certain amount then find windchill to get adjusted temp
 #else adjustedtemp = temperature 
 
-def windchillcalc():
-    pass
-#gets adjusted temperature accounting for windchill
+def clocalc(temp, met):
 
-def clocalc():
+    ###
+    #activitylevel = 60
+    #clo = abs((temp - 31)/(0.155*activitylevel))
+    ###
+
+    #1 Met = 58W/m^2 - cycling = 4 met
+    watt = met*52
+
+    
+    clo = abs((temp - 31)/(0.155*watt))
+    
+    
+    return clo
+
     pass
 #calculates the clovalue that would be needed for the adjusted temperature
 
@@ -918,6 +1041,7 @@ def permutationchooser():
 #Then at the end, once the code has chosen a combination and put it into the triptable, delete all values in the permutation chooser table
 
 def email():
+
     pass
 #sends the email with the clothes from the permutation chooser to the email stored for the profile
 

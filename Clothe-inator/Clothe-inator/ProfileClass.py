@@ -1,3 +1,8 @@
+import sqlite3
+#Connect to the database
+conn = sqlite3.connect('databaseofneededstuff.db', check_same_thread=False)
+#Some sort of abstract thing that acts as the link between database and program
+c = conn.cursor()
 
 class profile():
     """When the choose account function is done, the account detail/obect will become the one chosen 
@@ -37,6 +42,10 @@ class profile():
     #endprocedure
 
     def setEmailTime(self, emailtime):
+        c.execute("""UPDATE profiletable SET emailtime = :emailtime
+                    WHERE username = :username""",
+                  {'emailtime': emailtime, 'username': self.username})
+        conn.commit()
         pass
     # go to updater()
     #endprocedure
