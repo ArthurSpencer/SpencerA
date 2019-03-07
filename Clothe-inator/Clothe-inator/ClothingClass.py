@@ -53,7 +53,11 @@ class clothing():
    #go to updater()
    #endprocedure
 
-    def delete():
+    def delete(self, name):
+        c.execute("""DELETE FROM itemtable
+                    WHERE clothingname = :name AND username = :username""",
+                    {'name': name, 'username': self.username})
+        conn.commit()
         pass
     #need to return to clothingdetails()
     #endprocedure 

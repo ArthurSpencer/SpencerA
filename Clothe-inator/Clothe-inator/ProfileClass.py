@@ -32,11 +32,28 @@ class profile():
     #endfunction 
 
     def setUsername(self, username):
+        c.execute("""UPDATE profiletable SET username = :newuser
+                    WHERE username = :username""",
+                  {'newuser': username, 'username': self.username})
+        conn.commit()
+        c.execute("""UPDATE itemtable SET username = :newuser
+                    WHERE username = :username""",
+                  {'newuser': username, 'username': self.username})
+        conn.commit()
+        c.execute("""UPDATE triptable SET username = :newuser
+                    WHERE username = :username""",
+                  {'newuser': username, 'username': self.username})
+        conn.commit()
+        self.username = username
         pass
     # go to updater()
     #endprocedure
 
     def setEmail(self, email):
+        c.execute("""UPDATE profiletable SET email = :newemail
+                    WHERE username = :username""",
+                  {'newemail': email, 'username': self.username})
+        conn.commit()
         pass
     # go to updater()
     #endprocedure
@@ -51,11 +68,42 @@ class profile():
     #endprocedure
 
     def setAlgType(self, algtype):
+        c.execute("""UPDATE profiletable SET algorithmtype = :newalg
+                    WHERE username = :username""",
+                  {'newalg': algtype, 'username': self.username})
+        conn.commit()
         pass
     # go to updater()
     #endprocedure
 
-    def deleteself(self):
+    def deleteself(self, name):
+
+        c.execute("""DELETE FROM profiletable
+                    WHERE username = :username""",
+                    {'username': self.username})
+        conn.commit()
+        c.execute("""DELETE FROM itemtable
+                    WHERE username = :username""",
+                    {'username': self.username})
+        conn.commit()
+        c.execute("""DELETE FROM triptable
+                    WHERE username = :username""",
+                    {'username': self.username})
+        conn.commit()
+
+        #c.execute("""UPDATE profiletable SET username = :newuser
+        #            WHERE username = :username""",
+        #          {'newuser': username, 'username': self.username})
+        #conn.commit()
+        #c.execute("""UPDATE itemtable SET username = :newuser
+        #            WHERE username = :username""",
+        #          {'newuser': username, 'username': self.username})
+        #conn.commit()
+        #c.execute("""UPDATE triptable SET username = :newuser
+        #            WHERE username = :username""",
+        #          {'newuser': username, 'username': self.username})
+        #conn.commit()
+
         pass
     #need to return to start()
     #endprocedure

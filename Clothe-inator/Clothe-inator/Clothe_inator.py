@@ -490,7 +490,7 @@ def profilemenu(acc_1):
     seconds = (int(h) * 3600) + (int(m) * 60) + (int(s))
     ####
 
-    print(seconds)
+    #print(seconds)
     #stop = input("stop3")
 
     #print(h)
@@ -514,7 +514,7 @@ def profilemenu(acc_1):
     #print(timertime)
     ####
     s = sched.scheduler(time.time, time.sleep)
-    print(seconds)
+    #print(seconds)
 
     s.enter(1, 1, reccomend, argument=(acc_1,))
     #s.run()
@@ -552,8 +552,9 @@ def profilemenu(acc_1):
         print("""
         (1) Edit Clothing
         (2) Edit Profile
-        (3) Reccomendation Now
+        (3) Reccomendation Now 
         (M) Starting Menu
+        (C) Choose Account
         (X) Quit
 
         """)
@@ -575,6 +576,12 @@ def profilemenu(acc_1):
             t.cancel()
             clear()
             start()
+            ans = True
+            pass
+        elif action == "c":
+            t.cancel()
+            clear()
+            chooseaccount()
             ans = True
             pass
         elif action == "x":
@@ -602,6 +609,8 @@ def profiledetails(acc_1):
         c.execute("SELECT * FROM profiletable WHERE username LIKE :accountinput", {'accountinput': acc_1.username}) #lowercase stuff
         accountfetch = c.fetchall()
     
+        #print(accountfetch)
+        #stop = input("stop")
 
         username = accountfetch[0][0] 
         email = accountfetch[0][1]
@@ -627,11 +636,23 @@ def profiledetails(acc_1):
         action = input("What would you like to change?\n").lower()
         if action == "1":
             attribute = "username"
-            username = verification(attribute) 
+            clear()
+            username = input("Enter new Username\n")
+            c.execute("Select * FROM profiletable WHERE username =:username", {'username': username})
+            checkusername = (str(c.fetchone()))
+            #If check does not equal to none then that username must already exist in some form
+            while checkusername != "None":
+                username = input("That username is already in use, please choose another\n")
+                username = input("Enter Username\n")
+                c.execute("Select * FROM profiletable WHERE username =:username", {'username': username})
+                checkusername = (str(c.fetchone()))
+            #endwhile
             acc_1.setUsername(username)
+            profiledetails(acc_1)
             pass
         elif action == "2":
             attribute = "email"
+            clear()
             email = verification(attribute)
             acc_1.setEmail(email)
             pass
@@ -653,6 +674,41 @@ def profiledetails(acc_1):
             profiledetails(acc_1)
             pass
         elif action == "4":
+
+            clear()
+            ex = False
+            while ex == False:
+                print("Which algorithm would you like to use?")
+                print("( 1 ) Pure Clo - Arthur")
+                print("( 2 ) Clo and Temp Range - Arthur")
+                print("( 3 ) Clo - Josh")
+                print("( / ) Back")
+                selection = input("What would you like to do?\n").lower()
+                if (selection == "1"): 
+                    clear()
+                    clo = "clo"
+                    acc_1.setAlgType(clo)
+                    profiledetails(acc_1)
+                if (selection == "2"): 
+                    clear()
+                    clotr = "clotr"
+                    acc_1.setAlgType(clotr)
+                    profiledetails(acc_1)
+                if (selection == "3"): 
+                    clear()
+                    cloj = "cloj"
+                    acc_1.setAlgType(cloj)
+                    profiledetails(acc_1)
+                elif (selection == "/"):
+                    clear()
+                    profiledetails(acc_1)
+                else:
+                    clear()
+                    print("This option cannot be selected")
+
+
+
+
             algtype = input("What Algorthim Type would you like?: Clo")
             acc_1.setAlgType
             #Add validation
@@ -667,7 +723,10 @@ def profiledetails(acc_1):
                 selection = input("What would you like to do?\n").lower()
                 if (selection == "x"): 
                     clear()
-                    acc_1.deleteself
+                    name = acc_1.username
+                    acc_1.deleteself(name)
+                    c.execute("Select username FROM profiletable")
+                    clear()
                     start()
                 elif (selection == "/"):
                     clear()
@@ -798,7 +857,8 @@ def clothingdetails(acc_1, item):
                 selection = input("What would you like to do?\n").lower()
                 if (selection == "x"): 
                     clear()
-                    cl_2.delete
+                    name = cl_2.clothingname
+                    cl_2.delete(name)
                     clothingdetailsoptions(acc_1)
                 elif (selection == "/"):
                     clothingdetails(acc_1, item)
@@ -976,7 +1036,7 @@ def reccomend(acc_1):
     clovalue = clocalc(adjtemp, met)
 
     print(clovalue)
-    stop = input("stop")
+    stop = input("PAUSE")
     clear()
     profilemenu(acc_1)
     pass
