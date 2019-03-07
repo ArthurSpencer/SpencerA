@@ -517,7 +517,7 @@ def profilemenu(acc_1):
     print(seconds)
 
     s.enter(1, 1, reccomend, argument=(acc_1,))
-    s.run()
+    #s.run()
 
     #stop = input("stop")
 
