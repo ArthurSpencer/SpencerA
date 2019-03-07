@@ -1,5 +1,6 @@
 import sqlite3
 import datetime
+import sched
 import time
 import os
 import ssl
@@ -13,7 +14,14 @@ import threading
 from multiprocessing import Process
 import sys
 import pyowm
+
+
 owm = pyowm.OWM('19869702ff812dc8fab95ff8ddffec2f')
+
+
+
+
+
 
 #from datetime import datetime
 
@@ -445,7 +453,6 @@ def profilemenu(acc_1):
 
     
     
-    
 
 
     #find difference between timenow and rectime
@@ -498,8 +505,7 @@ def profilemenu(acc_1):
     global t
     t = threading.Timer(seconds, reccomend, [acc_1])
     
-    t.start()
-    
+    #t.start()
     clear()
 
     #stop = input("stop4")
@@ -507,6 +513,18 @@ def profilemenu(acc_1):
     ####
     #print(timertime)
     ####
+    s = sched.scheduler(time.time, time.sleep)
+    print(seconds)
+
+    s.enter(1, 1, reccomend, argument=(acc_1,))
+    s.run()
+
+    #stop = input("stop")
+
+
+
+
+
 
 
     ans = False
@@ -942,7 +960,6 @@ def clothingtypechoosersubmenu(ctc, makeacc):
 
 
 def reccomend(acc_1):
-    t.cancel()
     #t.join()
     clear()
 
@@ -960,7 +977,6 @@ def reccomend(acc_1):
 
     print(clovalue)
     stop = input("stop")
-
     clear()
     profilemenu(acc_1)
     pass
