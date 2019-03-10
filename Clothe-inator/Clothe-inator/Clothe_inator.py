@@ -158,7 +158,7 @@ def tablemaker():
  
 
 
-def start():
+def starter():
     exit = False
     while exit == False:
         possible = [1,2]
@@ -331,7 +331,7 @@ def chooseaccount():
         selection = input("Choose your account\n")
         if selection == "/":
             clear()
-            start()
+            starter()
         elif selection not in optionlist:
             clear()
             print("This number option cannot be selected")
@@ -383,7 +383,7 @@ def chooseaccount():
     
     ##print(accountlist) # otherwise lowercase
     #print(display)
-    #print("( / ) to exit to start")
+    #print("( / ) to exit to starter")
     ##### End of Scary Loop
     #####
     ##print(accountlist)
@@ -392,7 +392,7 @@ def chooseaccount():
 
     #if accountinput == "/":
     #    clear()
-    #    start()
+    #    starter()
 
 
     #profinput = ("('" + accountinput + "',)").lower()
@@ -439,7 +439,20 @@ def chooseaccount():
 
 #Choose account from list
 
-def timer(acc_1):
+def timer(acc_1, seconds):
+    while seconds > 0:
+        seconds = seconds - 1
+        time.sleep(1)
+        if seconds == 0:
+            t = True
+            #reccomend(acc_1)
+
+    
+    pass
+
+def prerec(acc_1):
+    reccomend(acc_1)
+    
     pass
 
 def profilemenu(acc_1):
@@ -488,6 +501,24 @@ def profilemenu(acc_1):
     
     ####
     seconds = (int(h) * 3600) + (int(m) * 60) + (int(s))
+    t = threading.Thread(target=timer, args=(acc_1,3))
+    t.start()
+
+
+    #pt = Process(target = timer, args=(acc_1, seconds))
+    #pt.start()
+
+    #global t
+    #t = threading.Timer(5, prerec, [acc_1])
+    #t.start()
+
+
+    
+    #stop = input("st")
+    #stop = input("st")
+
+    #timer (acc_1, seconds)
+
     ####
 
     #print(seconds)
@@ -502,10 +533,10 @@ def profilemenu(acc_1):
     #print(timertime)
     #print(seconds)
     #st = input("stop")
-    global t
-    t = threading.Timer(seconds, reccomend, [acc_1])
+    #global t
+    #t = threading.Timer(seconds, reccomend, [acc_1])
     
-    #t.start()
+    #t.starter()
     clear()
 
     #stop = input("stop4")
@@ -513,19 +544,14 @@ def profilemenu(acc_1):
     ####
     #print(timertime)
     ####
-    s = sched.scheduler(time.time, time.sleep)
-    #print(seconds)
 
-    s.enter(1, 1, reccomend, argument=(acc_1,))
+
+    #s = sched.scheduler(time.time, time.sleep)
+    #print(seconds)
+    #s.enter(1, 1, reccomend, argument=(acc_1,))
     #s.run()
 
     #stop = input("stop")
-
-
-
-
-
-
 
     ans = False
     while ans == False:
@@ -568,18 +594,19 @@ def profilemenu(acc_1):
             ans = True
             pass
         elif action == "3":
-            t.cancel()
-            reccomend(acc_1)
+            #t.cancel()
+            clear()
+            prerec(acc_1)
             ans = True
             pass
         elif action == "m":
-            t.cancel()
+            #t.cancel()
             clear()
-            start()
+            starter()
             ans = True
             pass
         elif action == "c":
-            t.cancel()
+            #t.cancel()
             clear()
             chooseaccount()
             ans = True
@@ -727,7 +754,7 @@ def profiledetails(acc_1):
                     acc_1.deleteself(name)
                     c.execute("Select username FROM profiletable")
                     clear()
-                    start()
+                    starter()
                 elif (selection == "/"):
                     clear()
                     profiledetails(acc_1)
@@ -1016,11 +1043,12 @@ def clothingtypechoosersubmenu(ctc, makeacc):
     
     pass
 
-        
-
 
 def reccomend(acc_1):
-    #t.join()
+    
+    #stop = input("STOP")
+        #pt.terminate()
+        #pass
     clear()
 
     met = 2.3 #metabolic rate in met
@@ -1036,7 +1064,7 @@ def reccomend(acc_1):
     clovalue = clocalc(adjtemp, met)
 
     print(clovalue)
-    stop = input("PAUSE")
+    stop = input("STOP")
     clear()
     profilemenu(acc_1)
     pass
@@ -1131,7 +1159,11 @@ def userfeedbackupdate():
 #print("Table made")
 #comment out tablemaker after first run
 
-start()
-print("You got out")
+t = False
+while t != True:
+    starter()
+    print("You got out")
+else:
+    reccomend(acc_1)
 ###
 ### Main calling program - hopefully should never be broken out of, because all functions refer to different functions - they dont refer to self so hopefully no stack overflow recursion errors 
