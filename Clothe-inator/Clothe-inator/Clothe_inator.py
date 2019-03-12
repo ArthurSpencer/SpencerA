@@ -501,8 +501,8 @@ def profilemenu(acc_1):
     
     ####
     seconds = (int(h) * 3600) + (int(m) * 60) + (int(s))
-    t = threading.Thread(target=timer, args=(acc_1,3))
-    t.start()
+    #t = threading.Thread(target=timer, args=(acc_1,3))
+    #t.start()
 
 
     #pt = Process(target = timer, args=(acc_1, seconds))
