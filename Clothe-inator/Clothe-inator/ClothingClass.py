@@ -36,7 +36,11 @@ class clothing():
         return self.temprangemax
     #endfunction
 
-    def setClothingName(self, clothingname):
+    def setClothingName(self, newname):
+        c.execute("""UPDATE itemtable SET clothingname = :clothingnameentry
+                    WHERE clothingname = :clothingname AND username = :username""",
+                  {'clothingnameentry': newname, 'clothingname': self.clothingname, 'username': self.username})
+        conn.commit()
         pass
     # go to updater()
     #endprocedure

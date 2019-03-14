@@ -824,6 +824,8 @@ def clothingdetailsoptions(acc_1):
         else:
             selection = int(selection) - 1
             item = str(firstclothingnamelist[selection][0])
+            #print(item)
+            #stop = input("stop")
             clear()
             clothingdetails(acc_1, item)
 
@@ -834,6 +836,7 @@ def clothingdetails(acc_1, item):
 
     exit = False
     while exit == False:
+        clear()
 
         c.execute("SELECT * FROM itemtable WHERE clothingname =:item AND username = :username", {'item': item, 'username': acc_1.username}) #lowercase stuff
         itemfetch = c.fetchall()
@@ -841,7 +844,8 @@ def clothingdetails(acc_1, item):
         #print(item)
         #print(itemfetch)
         #stop = input("stop")
-
+        #print(item)
+        #print(itemfetch)
         username = itemfetch[0][0] 
         clothingname = itemfetch[0][1]
         clothingtypekey = itemfetch[0][2]
@@ -866,13 +870,17 @@ def clothingdetails(acc_1, item):
         action = input("What would you like to do?\n").lower()
         if action == "1":
             clear()
-            newname = input("What would you like the new item name to be?")
+            newname = input("What would you like the new item name to be?\n")
             cl_2.setClothingName(newname)
+            item = newname
+            clothingdetails(acc_1, item)
+            clear()
             pass
         elif action == "2":
             clear()
             newtype = clothingtypechoosermenu(True)
             cl_2.setClothingTypeKey(newtype)
+            clothingdetails(acc_1, item)
             clear()
             pass
         elif action == "x":
@@ -899,7 +907,7 @@ def clothingdetails(acc_1, item):
         else: 
             pass
         
-    t.join()
+    #t.join()
 
 
     pass
@@ -1064,8 +1072,9 @@ def reccomend(acc_1):
     clovalue = clocalc(adjtemp, met)
 
     print(clovalue)
-    stop = input("STOP")
+    stop = input("This is the Clo Value")
     clear()
+    permutationrunner(acc_1)
     profilemenu(acc_1)
     pass
 #Contains the calls to functions to reccomend an outfit
@@ -1129,7 +1138,57 @@ def clocalc(temp, met):
     pass
 #calculates the clovalue that would be needed for the adjusted temperature
 
-def permutationrunner():
+def permutationrunner(acc_1):
+    # first put all ctks in the correct ctcreflist
+
+    #### Sample
+    ##underwearpantsref = [1]
+    ##lists = [underwearpantsref]
+    ##first = lists[0]
+    ##print(first)
+    ##stop = input("stop")
+    ##first[0] = 2
+    ##print(underwearpantsref)
+    ##stop = input("stop")
+
+
+    ###Basicallllllly - the idea is that the cts are not hardcoded so if you change the database/excel to add another ctc you dont need to worry about the code
+
+    listtest = []
+    newlctc = "first"
+    newlctc = newlctc[]
+
+    listtest.append(first)
+    listtest[0,0] = 1
+    print(listtest)
+    stop = input("stop")
+
+    underwearpantsref = []
+    underwearshirtsref = []
+    shirts = []
+    trousers = []
+    coveralls = []
+    highinscoveralls = []
+    sweaters = []
+    jacket = []
+    coatsoverjacketsovertrousers = []
+    socks = []
+    shoes = []
+    skirtsdressers = []
+    sleepwear = []
+    robes = []
+
+    c.execute("Select * FROM clothinginfotable")
+    listofinfotable = (c.fetchall)
+    print(listofinfotable)
+
+
+
+    c.execute("Select clothingtypekey FROM clothinginfotable WHERE clothingtypecategory =:ctc", {'ctc': ctc})
+    submenufirstlist = (c.fetchall())
+    lenoffirstlist = len(submenufirstlist)
+
+
     pass
 #runs through every single possible combination of clothing
 #creates list with all of the clothing possibilities and the clo value
