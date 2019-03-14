@@ -1074,7 +1074,7 @@ def reccomend(acc_1):
     print(clovalue)
     stop = input("This is the Clo Value")
     clear()
-    permutationrunner(acc_1)
+    JankAfButWorksForShow(acc_1)
     profilemenu(acc_1)
     pass
 #Contains the calls to functions to reccomend an outfit
@@ -1138,7 +1138,108 @@ def clocalc(temp, met):
     pass
 #calculates the clovalue that would be needed for the adjusted temperature
 
-def permutationrunner(acc_1):
+def JankAfButWorksForShow(acc_1):
+
+    # This probably won't work on a RPI cos of puny memory limit 
+    # This needs to be changed to a non hardcoded flexible list thing in a dictionary - so if ctcs are added, don't have to change code
+    # Also use proper joins - am tired (fix sunday morning)
+
+    UnderwearBottom = []
+    UnderwearTop = []
+    Shirts = []
+    Trousers = []
+    CoverallsOveralls = []
+    Sweaters = []
+    CoatJacket = []
+    Socks = []
+    Shoes = []
+    Skirtsdresses = []
+
+    username = acc_1.username
+    c.execute("Select * FROM itemtable WHERE username =:name", {'name': username})
+    useritems = (c.fetchall())
+    #print(useritems)
+    #stop = input("stop")
+    clear()
+    lenuseritems = len(useritems)
+    #print(lenuseritems)
+    #stop = input("stop")
+    for counter in range(lenuseritems):
+        currentitemname = useritems[counter][1]
+        #print(currentitemname)
+        #stop = input("stop")
+        ctk = useritems[counter][2]
+        c.execute("Select clothingtypecategory FROM clothinginfotable WHERE clothingtypekey =:ctk", {'ctk': ctk})
+        category = (c.fetchone())
+        category = category[0]
+        #print(category)
+        #stop = input("stop")
+        if category == "Underwear (Bottom)":
+            UnderwearBottom.append(currentitemname)
+            #pass
+        elif category == "Underwear (Top)":
+            UnderwearTop.append(currentitemname)
+            #pass
+        elif category == "Shirts":
+            Shirts.append(currentitemname)
+            #pass
+        elif category == "Trousers":
+            Trousers.append(currentitemname)
+            #pass
+        elif category == "Coveralls/Overalls":
+            CoverallsOveralls.append(currentitemname)
+            #pass
+        elif category == "Sweaters":
+            Sweaters.append(currentitemname)
+            #pass
+        elif category == "Coat/Jacket":
+            CoatJacket.append(currentitemname)
+            #pass
+        elif category == "Socks":
+            Socks.append(currentitemname)
+            #pass
+        elif category == "Shoes":
+            Shoes.append(currentitemname)
+            #pass
+        elif category == "Skirts, dresses":
+            Skirtsdresses.append(currentitemname)
+            #pass
+
+    print(Sweaters)
+    print(Sweaters[0])
+    combolist = []
+    combolist.append(UnderwearBottom)
+    combolist.append(UnderwearTop)
+    combolist.append(Shirts)
+    combolist.append(Trousers)
+    combolist.append(CoverallsOveralls)
+    combolist.append(Sweaters)
+    combolist.append(CoatJacket)
+    combolist.append(Socks)
+    combolist.append(Shoes)
+    combolist.append(Skirtsdresses)
+
+    print(combolist)
+    stop = input("before")
+
+    r=[[]]
+    for x in combolist:
+        t = []
+        for y in x:
+            for i in r:
+                t.append(i+[y])
+        r = t
+
+    print (r)
+
+    
+
+    stop = input("stop")
+
+        #print(currentitemname)
+        #stop = input("stop")
+
+
     # first put all ctks in the correct ctcreflist
 
     #### Sample
@@ -1154,39 +1255,39 @@ def permutationrunner(acc_1):
 
     ###Basicallllllly - the idea is that the cts are not hardcoded so if you change the database/excel to add another ctc you dont need to worry about the code
 
-    listtest = []
-    newlctc = "first"
-    newlctc = newlctc[]
+    #listtest = []
+    #newlctc = "first"
+    #newlctc = newlctc[]
 
-    listtest.append(first)
-    listtest[0,0] = 1
-    print(listtest)
-    stop = input("stop")
+    #listtest.append(first)
+    #listtest[0,0] = 1
+    #print(listtest)
+    #stop = input("stop")
 
-    underwearpantsref = []
-    underwearshirtsref = []
-    shirts = []
-    trousers = []
-    coveralls = []
-    highinscoveralls = []
-    sweaters = []
-    jacket = []
-    coatsoverjacketsovertrousers = []
-    socks = []
-    shoes = []
-    skirtsdressers = []
-    sleepwear = []
-    robes = []
+    #underwearpantsref = []
+    #underwearshirtsref = []
+    #shirts = []
+    #trousers = []
+    #coveralls = []
+    #highinscoveralls = []
+    #sweaters = []
+    #jacket = []
+    #coatsoverjacketsovertrousers = []
+    #socks = []
+    #shoes = []
+    #skirtsdressers = []
+    #sleepwear = []
+    #robes = []
 
-    c.execute("Select * FROM clothinginfotable")
-    listofinfotable = (c.fetchall)
-    print(listofinfotable)
+    #c.execute("Select * FROM clothinginfotable")
+    #listofinfotable = (c.fetchall)
+    #print(listofinfotable)
 
 
 
-    c.execute("Select clothingtypekey FROM clothinginfotable WHERE clothingtypecategory =:ctc", {'ctc': ctc})
-    submenufirstlist = (c.fetchall())
-    lenoffirstlist = len(submenufirstlist)
+    #c.execute("Select clothingtypekey FROM clothinginfotable WHERE clothingtypecategory =:ctc", {'ctc': ctc})
+    #submenufirstlist = (c.fetchall())
+    #lenoffirstlist = len(submenufirstlist)
 
 
     pass
