@@ -1072,9 +1072,10 @@ def reccomend(acc_1):
     clovalue = clocalc(adjtemp, met)
 
     print(clovalue)
+
     stop = input("This is the Clo Value")
     clear()
-    JankAfButWorksForShow(acc_1)
+    JankAfButWorksForShow(acc_1, clovalue, adjtemp)
     profilemenu(acc_1)
     pass
 #Contains the calls to functions to reccomend an outfit
@@ -1138,7 +1139,7 @@ def clocalc(temp, met):
     pass
 #calculates the clovalue that would be needed for the adjusted temperature
 
-def JankAfButWorksForShow(acc_1):
+def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
     # This probably won't work on a RPI cos of puny memory limit 
     # This needs to be changed to a non hardcoded flexible list thing in a dictionary - so if ctcs are added, don't have to change code
@@ -1205,8 +1206,14 @@ def JankAfButWorksForShow(acc_1):
             Skirtsdresses.append(currentitemname)
             #pass
 
-    print(Sweaters)
-    print(Sweaters[0])
+    UnderwearTop.append("None")
+    CoverallsOveralls.append("None")
+    Sweaters.append("None")
+    CoatJacket.append("None")
+    Skirtsdresses.append("None")
+
+    #print(Sweaters)
+    #print(Sweaters[0])
     combolist = []
     combolist.append(UnderwearBottom)
     combolist.append(UnderwearTop)
@@ -1219,8 +1226,8 @@ def JankAfButWorksForShow(acc_1):
     combolist.append(Shoes)
     combolist.append(Skirtsdresses)
 
-    print(combolist)
-    stop = input("before")
+    #print(combolist)
+    #stop = input("before")
 
     r=[[]]
     for x in combolist:
@@ -1228,13 +1235,127 @@ def JankAfButWorksForShow(acc_1):
         for y in x:
             for i in r:
                 t.append(i+[y])
+
         r = t
 
-    print (r)
+    #id = 0
+    #lencomblist = len(r)
+    #for fcounter in range(lencomblist):
+    #    possiblecombo = r[fcounter]
+    #    posscomblen = len(possiblecombo)
+    #    id = id + 1
+    #    totalclo = 0
+    #    for tcounter in range(posscomblen):
+    #        itemforclosearch = r[fcounter][tcounter]
+    #        print(itemforclosearch)
+    #        try:
+    #            uname = acc_1.username
+    #            c.execute("Select clothingtypekey FROM itemtable WHERE clothingname =:name AND username =:uname", {'name': itemforclosearch, 'uname': uname})
+    #            ctk = c.fetchone()
+    #            ctk = ctk[0]
+    #            c.execute("Select clovalue FROM clothinginfotable WHERE clothingtypekey =:ctk", {'ctk': ctk})
+    #            cvalue = c.fetchone()
+    #            cvalue = cvalue[0]
+    #            totalclo = totalclo + cvalue
+    #        except:
+    #            pass
+    #    #clear()
+    #    #print(id)
+    #    #print(totalclo)
+    #    #stop = input("stop")
+    #    r[counter] = [id] + r[counter]
+    #    r[counter].append(totalclo)
+
+    
+    lenoflist = len(r)
+    id = 0
+    for fcounter in range(lenoflist):
+        totalclo = 0
+        id = id + 1
+        combo = (r[fcounter])
+        lenofcombo = len(combo)
+        for tcounter in range(lenofcombo):
+            item = (r[fcounter][tcounter])
+            if item != 'None' or None:
+                uname = acc_1.username
+                c.execute("Select clothingtypekey FROM itemtable WHERE clothingname =:name AND username =:uname", {'name': item, 'uname': uname})
+                ctk = c.fetchone()
+                ctk = ctk[0]
+                #print(ctk)
+                c.execute("Select clovalue FROM clothinginfotable WHERE clothingtypekey =:ctk", {'ctk': ctk})
+                cvalue = c.fetchone()
+                cvalue = cvalue[0]
+                #print(cvalue)
+                totalclo = totalclo + cvalue
+                #stop = input("t")
+            else:
+                pass
+        #print(id)
+        #print(totalclo)
+        #print(combo)
+        r[fcounter].insert(0,id)
+        r[fcounter].append(totalclo)
+        #print(r[fcounter])
+        #stop = input("stop")
+
+    clear()
+
+    #print (r)
+    #print (len(r))
+    
+
+    #stop = input("stop")
+
+    clear()
+
+    ##### The following will put all those combinations in a created table which will be deleted after                          ######(remember to use range values)######
+    
+
+    c.execute("""
+    CREATE TABLE combinationtable
+    (
+    combinationdid integer,
+    UnderwearBottom text,
+    UnderwearTop text,
+    Shirts text,
+    Trousers text,
+    CoverallsOveralls text,
+    Sweaters text,
+    CoatJacket text,
+    Socks text,
+    Shoes text,
+    Skirtsdresses text,
+    clovaluetotal integer
+    )
+    """)
+    conn.commit()
 
     
 
-    stop = input("stop")
+
+    for counter in range(lenoflist):
+        
+        c.execute("INSERT INTO combinationtable VALUES (:combinationdid, :UnderwearBottom, :UnderwearTop, :Shirts, :Trousers, :CoverallsOveralls, :Sweaters, :CoatJacket, :Socks, :Shoes, :Skirtsdresses, :clovaluetotal)", {'combinationdid': r[counter][0], 'UnderwearBottom': r[counter][1], 'UnderwearTop': r[counter][2], 'Shirts': r[counter][3], 'Trousers': r[counter][4], 'CoverallsOveralls': r[counter][5], 'Sweaters': r[counter][6], 'CoatJacket': r[counter][7], 'Socks': r[counter][8], 'Shoes': r[counter][9], 'Skirtsdresses': r[counter][10], 'clovaluetotal': r[counter][11]})
+        conn.commit()
+
+    print(adjtemp)
+    stop = input("befdel")
+
+    min = 0.9 * clovalue
+    max = 1.1 * clovalue
+    c.execute("DELETE FROM combinationtable WHERE clovaluetotal NOT BETWEEN :min AND :max", {'min': min, 'max': max})
+    conn.commit()
+
+    stop = input("aftdel")
+
+
+    c.execute("DROP TABLE combinationtable")
+    conn.commit()
+
+    stop = input("chk")
+
+    ##### End of SQL jankiness
+
 
         #print(currentitemname)
         #stop = input("stop")
