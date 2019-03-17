@@ -9,10 +9,10 @@ Underwear (Top),Shirt sleeveless,0.06,15,
 Underwear (Top),T-shirt,0.09,15,
 Underwear (Top),Shirt with long sleeves,0.12,10,
 Shirts,Tube top,0.06,,15
-Shirts,Short sleeve,0.09,,
+Shirts,Short sleeve,0.09,,5
 Shirts,Light blouse with long sleeves,0.15,,
 Shirts,Light shirt with long sleeves,0.2,,
-Shirts,Normal with long sleeves,0.25,,
+Shirts,Normal with long sleeves,0.25,25,
 Shirts,Flannel shirt with long sleeves,0.3,20,
 Shirts,Long sleeves with turtleneck blouse,0.34,22,
 Trousers,Shorts,0.06,,20
@@ -41,7 +41,7 @@ Coat/Jacket,Parka,0.7,15,
 Socks,Socks,0.02,,
 Socks,Thick ankle socks,0.05,15,
 Socks,Thick long socks,0.1,15,
-Shoes,Thin soled shoes,0.02,,20
+Shoes,Thin soled shoes,0.02,,10
 Shoes,Thick soled shoes,0.04,20,
 Shoes,Boots,0.05,20,
 Skirts,Light skirt 15 cm. above knee,0.01,,25

@@ -1337,35 +1337,44 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     
     lenoflist = len(r)
     id = 0
+    #Iterates through all the combinations 
     for fcounter in range(lenoflist):
+        #Total appropriatness points (which will be averaged by amount of non-none items
+        app = 0
+        #Total unsuitability points (which will be averaged by amount of non-none items
+        inapp = 0
+        #Averaged appropriatness points minus unsuitability points
+        apptotal = 0
+        #Standard Deviation of the median temperature range values for the items 
+        std = 0
+
         totalclo = 0
         id = id + 1
         combo = (r[fcounter])
         lenofcombo = len(combo)
+
+        #Iterates through the items in that combo
         for tcounter in range(lenofcombo):
             item = (r[fcounter][tcounter])
+            #checks if there is an item in that category - if there is then it is operated on
             if item != 'None' or None:
+                #Username will be used when searching sqltable for correct clothing type key
                 uname = acc_1.username
                 c.execute("Select clothingtypekey FROM itemtable WHERE clothingname =:name AND username =:uname", {'name': item, 'uname': uname})
                 ctk = c.fetchone()
                 ctk = ctk[0]
-                #print(ctk)
+                #Clo value selected from the item will be used to add to the total clo value of that combo
                 c.execute("Select clovalue FROM clothinginfotable WHERE clothingtypekey =:ctk", {'ctk': ctk})
                 cvalue = c.fetchone()
                 cvalue = cvalue[0]
-                #print(cvalue)
                 totalclo = totalclo + cvalue
-                #stop = input("t")
             else:
+                #If the item is equal to none then it skips that part
                 pass
 
-        #print(id)
-        #print(totalclo)
-        #print(combo)
+
         r[fcounter].insert(0,id)
         r[fcounter].append(totalclo)
-        #print(r[fcounter])
-        #stop = input("stop")
 
     clear()
 
