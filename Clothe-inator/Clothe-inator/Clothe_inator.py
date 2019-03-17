@@ -1133,6 +1133,10 @@ def reccomend(acc_1):
     print(clovalue)
 
     stop = input("This is the Clo Value")
+
+    print(adjtemp)
+
+    stop = input("This is the adjusted temp")
     clear()
     JankAfButWorksForShow(acc_1, clovalue, adjtemp)
     profilemenu(acc_1)
@@ -1354,6 +1358,7 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
                 #stop = input("t")
             else:
                 pass
+
         #print(id)
         #print(totalclo)
         #print(combo)
@@ -1386,7 +1391,7 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     ################################################################################################################################################################################################################################################
 
 
-    for counter in range(lenoflist):
+    #for counter in range(lenoflist):
 
 
 
