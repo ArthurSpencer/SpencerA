@@ -1,0 +1,51 @@
+clothingtypecategory,clothingtypekey,clovalue,max,min
+Underwear (Bottom),Pantyhose,0.02,,
+Underwear (Bottom),Panties,0.03,,
+Underwear (Bottom),Briefs,0.04,,
+Underwear (Bottom),Pants 1/2 long legs made of wool,0.06,15,
+Underwear (Bottom),Pants long legs,0.1,15,
+Underwear (Top),Bra,0.01,,
+Underwear (Top),Shirt sleeveless,0.06,15,
+Underwear (Top),T-shirt,0.09,15,
+Underwear (Top),Shirt with long sleeves,0.12,10,
+Shirts,Tube top,0.06,,15
+Shirts,Short sleeve,0.09,,
+Shirts,Light blouse with long sleeves,0.15,,
+Shirts,Light shirt with long sleeves,0.2,,
+Shirts,Normal with long sleeves,0.25,,
+Shirts,Flannel shirt with long sleeves,0.3,20,
+Shirts,Long sleeves with turtleneck blouse,0.34,22,
+Trousers,Shorts,0.06,,20
+Trousers,Walking shorts,0.11,,20
+Trousers,Light trousers,0.2,,15
+Trousers,Normal trousers,0.25,,
+Trousers,Flannel trousers,0.28,,15
+Coveralls/Overalls,Overalls,0.28,20,
+Coveralls/Overalls,"Daily wear, belted",0.49,20,
+Coveralls/Overalls,Work,0.5,20,
+Coveralls/Overalls,Multi-component with filling,1.03,10,
+Coveralls/Overalls,Fiber-pelt,1.13,10,
+Coveralls/Overalls,Overalls multi-component,0.52,30,
+Sweaters,Sleeveless vest,0.12,25,
+Sweaters,Thin sweater,0.2,25,
+Sweaters,Long thin sleeves with turtleneck,0.26,25,
+Sweaters,Thick sweater,0.35,20,
+Sweaters,Long thick sleeves with turtleneck,0.37,20,
+Coat/Jacket,Vest,0.13,25,
+Coat/Jacket,Light summer jacket,0.25,,20
+Coat/Jacket,Smock,0.3,25,
+Coat/Jacket,Jacket,0.35,,15
+Coat/Jacket,Down jacket,0.55,15,
+Coat/Jacket,Coat,0.6,20,
+Coat/Jacket,Parka,0.7,15,
+Socks,Socks,0.02,,
+Socks,Thick ankle socks,0.05,15,
+Socks,Thick long socks,0.1,15,
+Shoes,Thin soled shoes,0.02,,20
+Shoes,Thick soled shoes,0.04,20,
+Shoes,Boots,0.05,20,
+Skirts,Light skirt 15 cm. above knee,0.01,,25
+Skirts,Light skirt 15 cm. below knee,0.18,,20
+Skirts,Heavy skirt knee-length,0.25,,20
+Dresses,Light dress sleeveless,0.25,,20
+Dresses,Winter dress long sleeves,0.4,20,

@@ -1441,6 +1441,43 @@ def userfeedbackupdate():
 #print("Table made")
 #comment out tablemaker after first run
 
+def test():
+    # Basic logic for getting t
+    
+    
+
+    name = "SpencerA"
+    item = "Boxers"
+    c.execute("Select temprangemin, temprangemax FROM itemtable WHERE clothingname =:name AND username =:uname", {'name': item, 'uname': name})
+    ctk = c.fetchall()
+    trmax = ctk[0][0]
+    trmin = ctk[0][1]
+    print("Temprangemaxis: " + str(trmax))
+    print("Temprangeminis: " + str(trmin))
+    if trmax == "":
+        trmax = 1000
+    if trmin == "":
+        trmin = -1000
+    print("max")
+    print(trmax)
+    print("min")
+    print(trmin)
+    stop = input("stop")
+    pass
+
+def test2():
+    name = ("Tube top")
+    c.execute("Select max, min FROM clothinginfotable WHERE clothingtypekey =:name", {'name': name})
+    temps = c.fetchall()
+    print(temps)
+    none = (temps[0][0])
+    print(none)
+    print(str(none) + "hello")
+    stop = input("stop")
+
+#test()
+test2()
+
 t = False
 while t != True:
     starter()
