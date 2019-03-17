@@ -1347,9 +1347,15 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
         apptotal = 0
         #Standard Deviation of the median temperature range values for the items 
         std = 0
+        #List for the median temp range values of each item 
+        med = []
 
+        #Total clo from all seperate values
         totalclo = 0
+        #For primary key random identificaiton sorting whatever
         id = id + 1
+
+
         combo = (r[fcounter])
         lenofcombo = len(combo)
 
@@ -1368,10 +1374,25 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
                 cvalue = c.fetchone()
                 cvalue = cvalue[0]
                 totalclo = totalclo + cvalue
+
+                #I need to find the max and min temp range values - if max value is "none" then make it 35, if min value is "none" then make it -15
+                #If the current temperature is within the boundaries then appropriateness is increased by appropriatness + 0.1
+                #If outside the range then inappropriatness = inappropriatness + 0.1
+                #need to append the midpoint between the two boundaries to the med list
+
+
+
+
             else:
                 #If the item is equal to none then it skips that part
                 pass
 
+
+        #Need to average app and inapp based on how many clothing items are not none in that combo
+        #then subtract inapp from app to make an avg adj total app
+        #Append this adjusted app value to the list
+
+        #Do standard deviation on the med list and also append that to the list
 
         r[fcounter].insert(0,id)
         r[fcounter].append(totalclo)
@@ -1399,11 +1420,21 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
     ################################################################################################################################################################################################################################################
 
+    # All the Combos will now have (adj avg app total), (STD value), (Clo value)
 
-    #for counter in range(lenoflist):
+    # Iterate through the lists and do hard coded logic on which pairings are stupid and deleted them
+    
+    # Then iterate through the lists and sort them into 3 lists, - one ordered by the highest app total, one by the lowest std value, and one for the closest clo value 
+
+    # Then make a nested list with each combo id and the places it got on the lists
+
+    # Make a final list that has the id and averaged placement from the three lists ordered
+
+    # Best possible choice should be one of the top selection (lowest value, since higher placement means closer to one)
 
 
 
+    
 
 
 
