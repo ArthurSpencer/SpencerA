@@ -1350,6 +1350,7 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
 
     c.execute("DROP TABLE combinationtable")
+    conn.execute("VACUUM")
     conn.commit()
 
     stop = input("chk")
