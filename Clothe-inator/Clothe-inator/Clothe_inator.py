@@ -294,7 +294,14 @@ def enterclothing(username, makeacc):
     username = username
     clothingname = input("What is the name of your item\n")
     clothingtypekey = clothingtypechoosermenu(makeacc)
-    cl_1 = clothing(username,clothingname, clothingtypekey, "", "")
+
+
+    c.execute("SELECT max, min FROM clothinginfotable WHERE clothingtypekey LIKE :clothingtypekey", {'clothingtypekey': clothingtypekey}) #lowercase stuff
+    temps = c.fetchall()
+    print(temps)
+    temprangemax = temps[0][0]
+    temprangemin = temps[0][1]
+    cl_1 = clothing(username,clothingname, clothingtypekey, temprangemin, temprangemax)
     return cl_1
     #User chooses clothing name
 
@@ -803,11 +810,12 @@ def clothingdetailsoptions(acc_1):
         print(secondlist)
         rng = len(secondlist)
 
+        print("( U ) DEVUpdateTR")
         print("( + ) Add New Item")
         print("( / ) Back to Main Menu")
         
         
-        selection = input("Select an item to edit or delete\n")
+        selection = input("Select an item to edit or delete\n").lower()
         check = checkaccount()
         if selection == "/":
             clear()
@@ -815,6 +823,10 @@ def clothingdetailsoptions(acc_1):
         elif selection == "+":
             clear()
             additem(acc_1)
+            clear()
+        elif selection == "u":
+            clear()
+            devupdatetr(acc_1)
             clear()
 
         elif selection not in optionlist:
@@ -831,6 +843,53 @@ def clothingdetailsoptions(acc_1):
 
     
 #Lists clothing and then: lets user pick a piece of clothing from that list - 
+
+def devupdatetr(acc_1):
+    name = acc_1.username
+    c.execute("SELECT clothingname FROM itemtable WHERE username =:username", {'username': name}) #lowercase stuff
+    items = c.fetchall()
+    #print(items)
+    lenofitems = (len(items))
+    #stop = input("stop")
+
+    for counter in range(lenofitems):
+        opon = items[counter][0]
+        #print(opon)
+        c.execute("SELECT clothingtypekey FROM itemtable WHERE clothingname =:name", {'name': opon})
+        ctk = c.fetchone()
+        ctk = (ctk[0])
+        c.execute("SELECT max, min FROM clothinginfotable WHERE clothingtypekey LIKE :clothingtypekey", {'clothingtypekey': ctk})
+        temps = c.fetchall()
+        #print(temps)
+        temprangemax = temps[0][0]
+        temprangemin = temps[0][1]
+        #print(temprangemax)
+        #print(temprangemin)
+
+        #c.execute("SELECT * FROM itemtable WHERE clothingname =:item AND username = :username", {'item': item, 'username': acc_1.username}) #lowercase stuff
+        #itemfetch = c.fetchall()
+        clothingtypekey = ctk
+        clothingname = opon
+        username = name
+        #print(item)
+        #print(itemfetch)
+        #stop = input("stop")
+        #print(item)
+        #print(itemfetch)
+        #username = itemfetch[0][0] 
+        #clothingname = itemfetch[0][1]
+        #clothingtypekey = itemfetch[0][2]
+        #temprangemin = itemfetch[0][3]
+        #temprangemax = itemfetch[0][4]
+        #cl_2 = clothing(username,clothingname,clothingtypekey,temprangemin,temprangemax)
+        c.execute("""UPDATE itemtable SET temprangemax = :temprangemax
+                    WHERE clothingname = :clothingname AND username = :username""",
+                  {'temprangemax': temprangemax, 'clothingname': clothingname, 'username': username})
+        conn.commit()
+        c.execute("""UPDATE itemtable SET temprangemin = :temprangemax
+                    WHERE clothingname = :clothingname AND username = :username""",
+                  {'temprangemax': temprangemin, 'clothingname': clothingname, 'username': username})
+        conn.commit()
 
 def clothingdetails(acc_1, item):
 
@@ -1154,7 +1213,8 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     CoatJacket = []
     Socks = []
     Shoes = []
-    Skirtsdresses = []
+    Skirts = []
+    Dresses = []
 
     username = acc_1.username
     c.execute("Select * FROM itemtable WHERE username =:name", {'name': username})
@@ -1204,13 +1264,16 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
             #pass
         elif category == "Skirts, dresses":
             Skirtsdresses.append(currentitemname)
+        elif category == "Skirts, dresses":
+            Skirtsdresses.append(currentitemname)
             #pass
 
     UnderwearTop.append("None")
     CoverallsOveralls.append("None")
     Sweaters.append("None")
     CoatJacket.append("None")
-    Skirtsdresses.append("None")
+    Skirts.append("None")
+    Dresses.append("None")
 
     #print(Sweaters)
     #print(Sweaters[0])
@@ -1224,7 +1287,8 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     combolist.append(CoatJacket)
     combolist.append(Socks)
     combolist.append(Shoes)
-    combolist.append(Skirtsdresses)
+    combolist.append(Skirts)
+    combolist.append(Dresses)
 
     #print(combolist)
     #stop = input("before")
@@ -1311,6 +1375,41 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     ##### The following will put all those combinations in a created table which will be deleted after                          ######(remember to use range values)######
     
 
+
+
+
+
+
+
+
+
+    ################################################################################################################################################################################################################################################
+
+
+    for counter in range(lenoflist):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ################################################################################################################################################################################################################################################
+
     c.execute("""
     CREATE TABLE combinationtable
     (
@@ -1324,7 +1423,8 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     CoatJacket text,
     Socks text,
     Shoes text,
-    Skirtsdresses text,
+    Skirts text,
+    Dresses text,
     clovaluetotal integer
     )
     """)
@@ -1335,7 +1435,7 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
     for counter in range(lenoflist):
         
-        c.execute("INSERT INTO combinationtable VALUES (:combinationdid, :UnderwearBottom, :UnderwearTop, :Shirts, :Trousers, :CoverallsOveralls, :Sweaters, :CoatJacket, :Socks, :Shoes, :Skirtsdresses, :clovaluetotal)", {'combinationdid': r[counter][0], 'UnderwearBottom': r[counter][1], 'UnderwearTop': r[counter][2], 'Shirts': r[counter][3], 'Trousers': r[counter][4], 'CoverallsOveralls': r[counter][5], 'Sweaters': r[counter][6], 'CoatJacket': r[counter][7], 'Socks': r[counter][8], 'Shoes': r[counter][9], 'Skirtsdresses': r[counter][10], 'clovaluetotal': r[counter][11]})
+        c.execute("INSERT INTO combinationtable VALUES (:combinationdid, :UnderwearBottom, :UnderwearTop, :Shirts, :Trousers, :CoverallsOveralls, :Sweaters, :CoatJacket, :Socks, :Shoes, :Skirts, :Dresses, :clovaluetotal)", {'combinationdid': r[counter][0], 'UnderwearBottom': r[counter][1], 'UnderwearTop': r[counter][2], 'Shirts': r[counter][3], 'Trousers': r[counter][4], 'CoverallsOveralls': r[counter][5], 'Sweaters': r[counter][6], 'CoatJacket': r[counter][7], 'Socks': r[counter][8], 'Shoes': r[counter][9], 'Skirts': r[counter][10], 'Dresses': r[counter][11], 'clovaluetotal': r[counter][12]})
         conn.commit()
 
     print(adjtemp)
@@ -1444,7 +1544,6 @@ def userfeedbackupdate():
 def test():
     # Basic logic for getting t
     
-    
 
     name = "SpencerA"
     item = "Boxers"
@@ -1476,7 +1575,7 @@ def test2():
     stop = input("stop")
 
 #test()
-test2()
+#test2()
 
 t = False
 while t != True:
