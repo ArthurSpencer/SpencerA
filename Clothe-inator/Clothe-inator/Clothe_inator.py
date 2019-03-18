@@ -1440,7 +1440,7 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     
     #print(r[0])
 
-    stop = input("stop")
+    #stop = input("stop")
 
     clear()
 
@@ -1481,9 +1481,34 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     totalclolist = sorted(totalclolist, key=lambda x: x[12])
 
 
-    stop = input("stop")
-    
 
+    stop = input("stop")
+
+    stop = input("stop")
+    lenofsort = len(r)
+    placements = []
+    for counter in range(lenofsort):
+        ccplacements = []
+        #The Combo ID [counter][0]
+        id = r[counter][0]
+        ccplacements.append(id)
+
+        TC = r[counter][12]
+
+
+        #TheTotalClo [counter][1]
+        ccplacements.append(TC)
+        #STD [counter][2]
+        ccplacements.append(SD)
+        #SDJAPP [counter][3]
+        ccplacements.append(AA)
+
+        #appendsthatcomboslisttotheplacementlist
+        placements.append(ccplacements)
+
+
+
+        pass
 
 
 
