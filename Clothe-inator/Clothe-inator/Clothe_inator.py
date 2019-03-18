@@ -1335,10 +1335,68 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     #    r[counter] = [id] + r[counter]
     #    r[counter].append(totalclo)
 
+   #0 = UB
+   #1 = UT
+   #2 = Shirts
+   #3 = Tr
+   #4 = C/O
+   #5 = Sw
+   #6 = CJ
+   #7 = Socks
+   #8 = Shoes
+   #9 = Skirts
+   #10 = Dresses
     
     lenoflist = len(r)
+
+    for counter in range(lenoflist):
+        check = r[counter]
+        #ub = check[0]
+        #ut = check[1]
+        #sh = check[2]
+        #tr = check[3]
+        #co = check[4]
+        #sw = check[5]
+        #cj = check[6]
+        #socks = check[7]
+        #shoes = check[8]
+        #skirts = check[9]
+        #dresses = check[10]
+        listofctk = []
+        lencheck = len(check)
+        for scounter in range(lencheck):
+            itemname = str(check[scounter])
+            if itemname != "None":
+                c.execute("Select clothingtypekey FROM itemtable WHERE clothingname =:itemname AND username =:username", {'itemname': itemname, 'username': username})
+                ctk = c.fetchone()
+                ctk = ctk[0]
+                listofctk.append(ctk)
+            else:
+                listofctk.append(itemname)
+
+        lctk = listofctk
+        #stop = input("stop")
+
+
+
+
+        if lctk[6] == "Parka" and lctk[5] == "None":
+            del r[counter]
+            break
+
+        # find the ctk for that place if not none
+
+
+
+
+        # Put hardcoded statements for deletion
+        
+
+
+
     id = 0
     #Iterates through all the combinations 
+    lenoflist = len(r)
     for fcounter in range(lenoflist):
         #Total appropriatness points (which will be averaged by amount of non-none items
         app = 0
@@ -1400,7 +1458,7 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
                 #If the current temperature is within the boundaries then appropriateness is increased by appropriatness + 0.1
                 #If outside the range then inappropriatness = inappropriatness + 0.1
-                if adjtemp <= trmax and adjtemp >= trmin:
+                if (adjtemp <= trmax and adjtemp >= trmin):
                     app = app + 0.1
                 else:
                     inapp = inapp + 0.1
@@ -1444,17 +1502,6 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
     clear()
 
-    
-    
-
-
-
-
-
-
-
-
-
     ################################################################################################################################################################################################################################################
 
     # All the Combos will now have (adj avg app total), (STD value), (Clo value)
@@ -1476,79 +1523,188 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
     #Sort by 
 
+
+    #Theory - sort r list into 3 lists - one ordered by smallest difference to targetclo, one ordered by highest adjapp and one ordered by lowest std
+    #Go through the sorted lists
+    #At the beginning placement = 1 - go from top of list to bottom of the list
+    #When you go to the next value, if it is different from the previous value, placement = placement + 1 -- (otherwise it is tied and it will be given the same placement)
+    #On the first loop just add a key/value for each if 
+    #on the third and second loop just add values to the keys that already exist
+    #Then you can iterate through each key in the list and make an average of the three values which is appended to make a 4th value to the key
+    #Then i need to find a way of making a list out of the key (the id) and the 4th (averaged value)
+    #Then i can sort through the list by the averaged placement value and see which if is at the top
+    #Then see what i can do from there
+    #If i implement the hardcoded stuff before then the first in the list should be the comboid i choose
+
+
+
+    #(Idea for implementing a colour factoring - You have a list of the combo ids and at the top should be the ones which are: closest to clo value, most appropriate, have the least variation
+    #User should be able to choose whether they want to algorithm to test for colour preference/ palette
+    #2 algorithms - one without colour, one which takes colour preferences into consideration
+    #If the colour adjusted alg option is selected then:
+
+    #print(r)
+
     adjapplist = r
     totalclolist = r
     stdlist = r
+    x = len(r)
+    #print(totalclolist[0])
+    for counter in range(x):
+        #id = totalclolist[counter][0]
+        tc = totalclolist[counter][12]
+        difference = abs(clovalue - tc)
+        #difference will be the 15th value
+        totalclolist[counter].append(difference)
+        
 
 
+    #This list is sorted by the difference to the clo value - smallest at start of list
+    totalclolist = sorted(totalclolist, key=lambda x: x[15])
 
+    #This list is sorted by the value of the appropriatness
+    adjapplist = sorted(adjapplist, key=lambda x: x[14], reverse=True)
 
-
-
-
-
-
-
-
-
-
-
-
-    adjapplist = sorted(adjapplist, key=lambda x: x[14])
-    
-    #print(adjapplist)
-
+    #This list is sorted by the value of the appropriatness
     stdlist = sorted(stdlist, key=lambda x: x[13])
 
-    totalclolist = sorted(totalclolist, key=lambda x: x[12])
+
+    idplacements = dict()
+
+    x = len(r)
+    placement = 0
+    previousvalue = -100000000
+
+    #for clodifferenceplacementranking
+    for counter in range(x):
+        difference = totalclolist[counter][15]
+        if difference != previousvalue:
+            previousvalue = difference
+            placement = placement + 1
+
+        name = totalclolist[counter][0]
+        idplacements[name] = []
+        idplacements[name].append(placement)
+
+    #for stdlowestranking
+    placement = 0
+    previousvalue = -100000000
+    for counter in range(x):
+        std = stdlist[counter][13]
+        if std != previousvalue:
+            previousvalue = std
+            placement = placement + 1
+
+        name = stdlist[counter][0]
+        idplacements[name].append(placement)
+
+    #for adjappscore
+    placement = 0
+    previousvalue = -100000000
+    for counter in range(x):
+        adjapp = adjapplist[counter][14]
+        if adjapp != previousvalue:
+            previousvalue = adjapp
+            placement = placement + 1
+
+        name = adjapplist[counter][0]
+        idplacements[name].append(placement)
 
 
+    #print(idplacements)
 
-    stop = input("stop")
-
-    stop = input("stop")
-    lenofsort = len(r)
-    placements = []
-    for counter in range(lenofsort):
-        ccplacements = []
-        #The Combo ID [counter][0]
-        id = r[counter][0]
-        ccplacements.append(id)
-
-        TC = r[counter][12]
+    idavgplaces = []
 
 
-        #TheTotalClo [counter][1]
-        ccplacements.append(TC)
-        #STD [counter][2]
-        ccplacements.append(SD)
-        #SDJAPP [counter][3]
-        ccplacements.append(AA)
+    for x, y in idplacements.items():
+        id = x
+        values = y
+        averageplacement = sum(values)/len(values)
+        listings = []
+        listings.append(id)
+        listings.append(averageplacement)
+        idavgplaces.append(listings)
 
-        #appendsthatcomboslisttotheplacementlist
-        placements.append(ccplacements)
-
-
-
-        pass
-
+    #print(idplacements)
+    #print("")
+    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    idavgplaces = sorted(idavgplaces, key=lambda x: x[1])
+    best = idavgplaces[0][0]
+    print(best)
+    #print(idavgplaces)
+    found = False
+    place = 0
+    while found == False:
+        lookat = r[place][0]
+        if lookat != best:
+            place = place + 1
+        else:
+            besto = r[place]
+            found = True
+    
+    print(besto)
+    stop = input("")
     ################################################################################################################################################################################################################################################
+
+
+
+    #adjapplist = sorted(adjapplist, key=lambda x: x[14])
+    
+    ##print(adjapplist)
+
+    #stdlist = sorted(stdlist, key=lambda x: x[13])
+
+    #totalclolist = sorted(totalclolist, key=lambda x: x[12])
+
+
+
+    #stop = input("stop")
+
+    #stop = input("stop")
+    #lenofsort = len(r)
+    #placements = []
+    #for counter in range(lenofsort):
+    #    ccplacements = []
+    #    #The Combo ID [counter][0]
+    #    id = r[counter][0]
+    #    ccplacements.append(id)
+
+    #    TC = r[counter][12]
+
+
+    #    #TheTotalClo [counter][1]
+    #    ccplacements.append(TC)
+    #    #STD [counter][2]
+    #    ccplacements.append(SD)
+    #    #SDJAPP [counter][3]
+    #    ccplacements.append(AA)
+
+    #    #appendsthatcomboslisttotheplacementlist
+    #    placements.append(ccplacements)
+
+
+
+    #    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     ##### The following will put all those combinations in a created table which will be deleted after                          ######(remember to use range values)######
 
@@ -1718,24 +1874,7 @@ def test2():
     stop = input("stop")
 
 #def dicttest():
-    #Theory - sort r list into 3 lists - one ordered by smallest difference to targetclo, one ordered by highest adjapp and one ordered by lowest std
-    #Go through the sorted lists
-    #At the beginning placement = 1 - go from top of list to bottom of the list
-    #When you go to the next value, if it is different from the previous value, placement = placement + 1 -- (otherwise it is tied and it will be given the same placement)
-    #On the first loop just add a key/value for each if 
-    #on the third and second loop just add values to the keys that already exist
-    #Then you can iterate through each key in the list and make an average of the three values which is appended to make a 4th value to the key
-    #Then i need to find a way of making a list out of the key (the id) and the 4th (averaged value)
-    #Then i can sort through the list by the averaged placement value and see which if is at the top
-    #Then see what i can do from there
-    #If i implement the hardcoded stuff before then the first in the list should be the comboid i choose
-
-
-
-    #(Idea for implementing a colour factoring - You have a list of the combo ids and at the top should be the ones which are: closest to clo value, most appropriate, have the least variation
-    #User should be able to choose whether they want to algorithm to test for colour preference/ palette
-    #2 algorithms - one without colour, one which takes colour preferences into consideration
-    #If the colour adjusted alg option is selected then:
+    
     #
 
 
