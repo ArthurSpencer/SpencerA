@@ -1728,6 +1728,8 @@ def test2():
     #Then i need to find a way of making a list out of the key (the id) and the 4th (averaged value)
     #Then i can sort through the list by the averaged placement value and see which if is at the top
     #Then see what i can do from there
+    #If i implement the hardcoded stuff before then the first in the list should be the comboid i choose
+
 
 
     #(Idea for implementing a colour factoring - You have a list of the combo ids and at the top should be the ones which are: closest to clo value, most appropriate, have the least variation
