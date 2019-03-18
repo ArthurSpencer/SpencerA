@@ -14,6 +14,7 @@ import threading
 from multiprocessing import Process
 import sys
 import pyowm
+import statistics
 
 
 owm = pyowm.OWM('19869702ff812dc8fab95ff8ddffec2f')
@@ -1350,6 +1351,8 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
         #List for the median temp range values of each item 
         med = []
 
+        iteminrec = 0
+
         #Total clo from all seperate values
         totalclo = 0
         #For primary key random identificaiton sorting whatever
@@ -1364,6 +1367,7 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
             item = (r[fcounter][tcounter])
             #checks if there is an item in that category - if there is then it is operated on
             if item != 'None' or None:
+                iteminrec = iteminrec + 1
                 #Username will be used when searching sqltable for correct clothing type key
                 uname = acc_1.username
                 c.execute("Select clothingtypekey FROM itemtable WHERE clothingname =:name AND username =:uname", {'name': item, 'uname': uname})
@@ -1376,38 +1380,71 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
                 totalclo = totalclo + cvalue
 
                 #I need to find the max and min temp range values - if max value is "none" then make it 35, if min value is "none" then make it -15
+                c.execute("Select temprangemin, temprangemax FROM itemtable WHERE clothingname =:name AND username =:uname", {'name': item, 'uname': uname})
+                temps = c.fetchall()
+
+                #print(temps)
+                #stop = input("stop")
+
+
+                trmax = str(temps[0][0])
+                trmin = str(temps[0][1])
+
+                if trmax == "None":
+                    trmax = 35
+                if trmin == "None":
+                    trmin = -15
+                trmax = int(trmax)
+                trmin = int(trmin)
+
+
                 #If the current temperature is within the boundaries then appropriateness is increased by appropriatness + 0.1
                 #If outside the range then inappropriatness = inappropriatness + 0.1
+                if adjtemp <= trmax and adjtemp >= trmin:
+                    app = app + 0.1
+                else:
+                    inapp = inapp + 0.1
                 #need to append the midpoint between the two boundaries to the med list
-
-
-
-
+                entrytomed = trmax+trmin
+                entrytomed = entrytomed/2
+                med.append(entrytomed)
             else:
                 #If the item is equal to none then it skips that part
                 pass
 
 
         #Need to average app and inapp based on how many clothing items are not none in that combo
-        #then subtract inapp from app to make an avg adj total app
-        #Append this adjusted app value to the list
 
+        app = app/iteminrec
+        inapp = inapp/iteminrec
+
+
+        #then subtract inapp from app to make an avg adj total app
+
+        adjapp = app - inapp
+
+        #Append this adjusted app value to the list
         #Do standard deviation on the med list and also append that to the list
+        std = statistics.pstdev(med)
+
 
         r[fcounter].insert(0,id)
         r[fcounter].append(totalclo)
+        r[fcounter].append(std)
+        r[fcounter].append(adjapp)
 
     clear()
 
     #print (r)
     #print (len(r))
     
+    #print(r[0])
 
-    #stop = input("stop")
+    stop = input("stop")
 
     clear()
 
-    ##### The following will put all those combinations in a created table which will be deleted after                          ######(remember to use range values)######
+    
     
 
 
@@ -1433,7 +1470,18 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     # Best possible choice should be one of the top selection (lowest value, since higher placement means closer to one)
 
 
+    adjapplist = r
+    totalclolist = r
+    stdlist = r
+    adjapplist = sorted(adjapplist, key=lambda x: x[14])
+    #print(adjapplist)
 
+    stdlist = sorted(stdlist, key=lambda x: x[13])
+
+    totalclolist = sorted(totalclolist, key=lambda x: x[12])
+
+
+    stop = input("stop")
     
 
 
@@ -1454,6 +1502,9 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
 
     ################################################################################################################################################################################################################################################
+
+    ##### The following will put all those combinations in a created table which will be deleted after                          ######(remember to use range values)######
+
 
     c.execute("""
     CREATE TABLE combinationtable
