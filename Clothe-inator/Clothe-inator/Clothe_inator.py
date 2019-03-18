@@ -1469,10 +1469,31 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
 
     # Best possible choice should be one of the top selection (lowest value, since higher placement means closer to one)
 
+    # Note to self - totalclo is the 12th value, standard deviation is the 13th value and adjapp is the 14th value
+
+
+
+
+    #Sort by 
 
     adjapplist = r
     totalclolist = r
     stdlist = r
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     adjapplist = sorted(adjapplist, key=lambda x: x[14])
     
     #print(adjapplist)
@@ -1696,8 +1717,32 @@ def test2():
     print(str(none) + "hello")
     stop = input("stop")
 
+#def dicttest():
+    #Theory - sort r list into 3 lists - one ordered by smallest difference to targetclo, one ordered by highest adjapp and one ordered by lowest std
+    #Go through the sorted lists
+    #At the beginning placement = 1 - go from top of list to bottom of the list
+    #When you go to the next value, if it is different from the previous value, placement = placement + 1 -- (otherwise it is tied and it will be given the same placement)
+    #On the first loop just add a key/value for each if 
+    #on the third and second loop just add values to the keys that already exist
+    #Then you can iterate through each key in the list and make an average of the three values which is appended to make a 4th value to the key
+    #Then i need to find a way of making a list out of the key (the id) and the 4th (averaged value)
+    #Then i can sort through the list by the averaged placement value and see which if is at the top
+    #Then see what i can do from there
+
+
+    #(Idea for implementing a colour factoring - You have a list of the combo ids and at the top should be the ones which are: closest to clo value, most appropriate, have the least variation
+    #User should be able to choose whether they want to algorithm to test for colour preference/ palette
+    #2 algorithms - one without colour, one which takes colour preferences into consideration
+    #If the colour adjusted alg option is selected then:
+    #
+
+
+
 #test()
 #test2()
+#dicttest()
+
+
 
 t = False
 while t != True:
