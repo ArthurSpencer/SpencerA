@@ -1474,7 +1474,8 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     totalclolist = r
     stdlist = r
     adjapplist = sorted(adjapplist, key=lambda x: x[14])
-    #print(adjapplist)
+    x = len(adjapplist)
+    print(adjapplist[x - 1])
 
     stdlist = sorted(stdlist, key=lambda x: x[13])
 
