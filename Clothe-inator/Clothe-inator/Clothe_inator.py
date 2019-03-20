@@ -1113,7 +1113,8 @@ def clothingtypechoosersubmenu(ctc, makeacc):
 
 
 def reccomend(acc_1):
-    
+    #tim = now.strftime("%H:%M")
+    tim = "tim"
     #stop = input("STOP")
         #pt.terminate()
         #pass
@@ -1139,7 +1140,7 @@ def reccomend(acc_1):
 
     stop = input("This is the adjusted temp")
     clear()
-    JankAfButWorksForShow(acc_1, clovalue, adjtemp)
+    JankAfButWorksForShow(acc_1, clovalue, adjtemp, temp, wind, tim)
     profilemenu(acc_1)
     pass
 #Contains the calls to functions to reccomend an outfit
@@ -1203,7 +1204,7 @@ def clocalc(temp, met):
     pass
 #calculates the clovalue that would be needed for the adjusted temperature
 
-def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
+def JankAfButWorksForShow(acc_1, clovalue, adjtemp, temp, windspeed, tim):
 
     # This probably won't work on a RPI cos of puny memory limit 
     # This needs to be changed to a non hardcoded flexible list thing in a dictionary - so if ctcs are added, don't have to change code
@@ -1646,113 +1647,69 @@ def JankAfButWorksForShow(acc_1, clovalue, adjtemp):
     
     print(besto)
     stop = input("")
-    ################################################################################################################################################################################################################################################
-
-
-
-    #adjapplist = sorted(adjapplist, key=lambda x: x[14])
     
-    ##print(adjapplist)
+    tripid = besto[0] #need a random thing
+    username = username
+    #date = now.strftime("%Y-%m-%d")
+    tim = tim
+    temp = temp
+    windspeed = windspeed
+    adjtemp = adjtemp
+    activitylevel = "Normal"
+    clovalue = clovalue
 
-    #stdlist = sorted(stdlist, key=lambda x: x[13])
+    profilemenu(acc_1)
 
-    #totalclolist = sorted(totalclolist, key=lambda x: x[12])
+    c.execute("INSERT INTO itemtable VALUES (:username, :clothingname, :clothingtypekey, :temprangemin, :temprangemax)", {'username': cl_1.username, 'clothingname': cl_1.clothingname, 'clothingtypekey': cl_1.clothingtypekey, 'temprangemin': cl_1.temprangemin, 'temprangemax': cl_1.temprangemax})
 
-
-
-    #stop = input("stop")
-
-    #stop = input("stop")
-    #lenofsort = len(r)
-    #placements = []
-    #for counter in range(lenofsort):
-    #    ccplacements = []
-    #    #The Combo ID [counter][0]
-    #    id = r[counter][0]
-    #    ccplacements.append(id)
-
-    #    TC = r[counter][12]
-
-
-    #    #TheTotalClo [counter][1]
-    #    ccplacements.append(TC)
-    #    #STD [counter][2]
-    #    ccplacements.append(SD)
-    #    #SDJAPP [counter][3]
-    #    ccplacements.append(AA)
-
-    #    #appendsthatcomboslisttotheplacementlist
-    #    placements.append(ccplacements)
-
-
-
-    #    pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
     ##### The following will put all those combinations in a created table which will be deleted after                          ######(remember to use range values)######
 
 
-    c.execute("""
-    CREATE TABLE combinationtable
-    (
-    combinationdid integer,
-    UnderwearBottom text,
-    UnderwearTop text,
-    Shirts text,
-    Trousers text,
-    CoverallsOveralls text,
-    Sweaters text,
-    CoatJacket text,
-    Socks text,
-    Shoes text,
-    Skirts text,
-    Dresses text,
-    clovaluetotal integer
-    )
-    """)
-    conn.commit()
+    #c.execute("""
+    #CREATE TABLE combinationtable
+    #(
+    #combinationdid integer,
+    #UnderwearBottom text,
+    #UnderwearTop text,
+    #Shirts text,
+    #Trousers text,
+    #CoverallsOveralls text,
+    #Sweaters text,
+    #CoatJacket text,
+    #Socks text,
+    #Shoes text,
+    #Skirts text,
+    #Dresses text,
+    #clovaluetotal integer
+    #)
+    #""")
+    #conn.commit()
 
     
 
 
-    for counter in range(lenoflist):
+    #for counter in range(lenoflist):
         
-        c.execute("INSERT INTO combinationtable VALUES (:combinationdid, :UnderwearBottom, :UnderwearTop, :Shirts, :Trousers, :CoverallsOveralls, :Sweaters, :CoatJacket, :Socks, :Shoes, :Skirts, :Dresses, :clovaluetotal)", {'combinationdid': r[counter][0], 'UnderwearBottom': r[counter][1], 'UnderwearTop': r[counter][2], 'Shirts': r[counter][3], 'Trousers': r[counter][4], 'CoverallsOveralls': r[counter][5], 'Sweaters': r[counter][6], 'CoatJacket': r[counter][7], 'Socks': r[counter][8], 'Shoes': r[counter][9], 'Skirts': r[counter][10], 'Dresses': r[counter][11], 'clovaluetotal': r[counter][12]})
-        conn.commit()
+    #    c.execute("INSERT INTO combinationtable VALUES (:combinationdid, :UnderwearBottom, :UnderwearTop, :Shirts, :Trousers, :CoverallsOveralls, :Sweaters, :CoatJacket, :Socks, :Shoes, :Skirts, :Dresses, :clovaluetotal)", {'combinationdid': r[counter][0], 'UnderwearBottom': r[counter][1], 'UnderwearTop': r[counter][2], 'Shirts': r[counter][3], 'Trousers': r[counter][4], 'CoverallsOveralls': r[counter][5], 'Sweaters': r[counter][6], 'CoatJacket': r[counter][7], 'Socks': r[counter][8], 'Shoes': r[counter][9], 'Skirts': r[counter][10], 'Dresses': r[counter][11], 'clovaluetotal': r[counter][12]})
+    #    conn.commit()
 
-    print(adjtemp)
-    stop = input("befdel")
+    #print(adjtemp)
+    #stop = input("befdel")
 
-    min = 0.9 * clovalue
-    max = 1.1 * clovalue
-    c.execute("DELETE FROM combinationtable WHERE clovaluetotal NOT BETWEEN :min AND :max", {'min': min, 'max': max})
-    conn.commit()
+    #min = 0.9 * clovalue
+    #max = 1.1 * clovalue
+    #c.execute("DELETE FROM combinationtable WHERE clovaluetotal NOT BETWEEN :min AND :max", {'min': min, 'max': max})
+    #conn.commit()
 
-    stop = input("aftdel")
+    #stop = input("aftdel")
 
 
-    c.execute("DROP TABLE combinationtable")
-    conn.execute("VACUUM")
-    conn.commit()
+    #c.execute("DROP TABLE combinationtable")
+    #conn.execute("VACUUM")
+    #conn.commit()
 
-    stop = input("chk")
+    #stop = input("chk")
 
     ##### End of SQL jankiness
 
