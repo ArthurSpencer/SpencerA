@@ -44,7 +44,8 @@ while not done:
         y_padd = y_padd - 5
     if keys[pygame.K_DOWN]:
         y_padd = y_padd + 5
-    #Next event
+    #Next event
+
     # - - Game logic goes after this comment
 
     
