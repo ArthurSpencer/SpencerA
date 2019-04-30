@@ -3,7 +3,7 @@ import random
 import math
 
 table = []
-    for i in range (11):
+for i in range (11):
     table.append([1,1,1,1,1])
 #Table with 11 columns and 5 values in each column corresponding to each alien in that column
 
@@ -38,11 +38,12 @@ class invader(pygame.sprite.Sprite):
         
     def lookupdate(self):
         #Should change animation of the sprite (all sprite done together)
+        pass
 
-    def moveupdate(self):for i in range (11):
-    table.append(
-[1,1,1,1,1])
-        #
+    def moveupdate(self):
+        for i in range (11):
+            table.append([1,1,1,1,1])
+        pass        
 
 class player(pygame.sprite.Sprite):
     def __init__(self, color, width, height, speed):
@@ -53,6 +54,7 @@ class player(pygame.sprite.Sprite):
         self.speed = 0
         
     def playerupdate(self):
+        pass
 
 done = False
 row1 = pygame.sprite.Group()
