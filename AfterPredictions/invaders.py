@@ -116,7 +116,8 @@ while not done:
                 player.player_set_speed(3) # speed set to 3
         elif event.type == pygame.KEYUP: # - a key released
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                player.player_set_speed(0) # speed set to 0
+                player.player_set_speed(0) # speed set to 0
+
 
 
 
